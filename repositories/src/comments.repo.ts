@@ -1,5 +1,5 @@
 import { Comment } from '@smartlook/models/Comment';
-import { deserializeComments } from './mappers/comment.mapper';
+import { deserializeComments, serializeComments } from './mappers/comment.mapper';
 import { PgPool, PgRepository } from './pg.repo';
 
 type GetOneByQuery = {
@@ -35,7 +35,8 @@ export class CommentsRepository extends PgRepository<Comment> {
   }
 
   async insertOne(comment: Comment): Promise<void> {
-    return this.pool.insert(comment).into(CommentsRepository.TABLE_NAME);
+    const commentSerialized = serializeComments([comment]);
+    return this.pool.insert(commentSerialized).into(CommentsRepository.TABLE_NAME);
   }
 
 }

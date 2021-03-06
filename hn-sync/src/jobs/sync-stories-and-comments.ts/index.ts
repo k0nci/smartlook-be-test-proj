@@ -3,9 +3,9 @@ import { HNApiClient } from "../../clients/hn-api.client";
 import { ItemType } from "../../clients/hn-api.client/models/Item";
 
 export class SyncStoriesAndComments {
-  public static JOB_NAME = 'sync-stories-and-comments';
-
-  readonly JOB_CRON = process.env.CRON_SYNC_STORIES_AND_COMMENTS || '* * * * * *';
+  readonly JOB_NAME = 'sync-stories-and-comments';
+  readonly JOB_ENABLED = process.env.SYNC_STORIES_AND_COMMENTS_ENABLED || true;
+  readonly JOB_CRON = process.env.SYNC_STORIES_AND_COMMENTS_CRON || '* * * * *';
 
   private client: HNApiClient;
   private storiesRepo: StoriesRepository;
@@ -19,12 +19,11 @@ export class SyncStoriesAndComments {
   }
 
   async run(): Promise<void> {
-    console.log(`Job ${SyncStoriesAndComments.JOB_NAME} started`)
-
     const maxItemId = await this.client.getMaxItemId();
     for (let id = maxItemId; id > 0; id--) {
       const item = await this.client.getItemById(id);
-      if (item.type === ItemType.STORY) {
+      
+      if (item.type === ItemType.STORY && item.deleted !== true) {
         await this.storiesRepo.insertOne({
           id: item.id,
           author: item.by,
@@ -33,11 +32,8 @@ export class SyncStoriesAndComments {
           kids: item.kids || [],
           url: item.url || null,
         });
-        console.log(`Item ${item.id} inserted`)
       }
     }
-
-    console.log(`Job ${SyncStoriesAndComments.JOB_NAME} finished`)
   }
 
 }

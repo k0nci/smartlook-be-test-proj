@@ -9,7 +9,7 @@ const HN_API_URL = process.env.HN_API_URL || 'https://hacker-news.firebaseio.com
 
 const apiClient = axios.create({
   baseURL: HN_API_URL,
-  timeout: 1000,
+  timeout: 10000,
 });
 const hnApiClient = new HNApiClient(apiClient);
 
@@ -25,14 +25,18 @@ const dbPool = knex({
 });
 const storiesRepo = new StoriesRepository(dbPool);
 
-
-const RUNNING_JOBS = [
+const JOBS_TO_RUN = [
   new SyncStoriesAndComments(hnApiClient, storiesRepo),
 ];
 
-for (const job of RUNNING_JOBS) {
-  const cronJob = new CronJob(job.JOB_CRON, () => {
-    job.run();
+for (const job of JOBS_TO_RUN) {
+  if (!job.JOB_ENABLED) {
+    continue;
+  }
+  const cronJob = new CronJob(job.JOB_CRON, async () => {
+    console.log(`Job ${job.JOB_NAME} started`);
+    await job.run();
+    console.log(`Job ${job.JOB_NAME} finished`);
   });
   cronJob.start()
 }
