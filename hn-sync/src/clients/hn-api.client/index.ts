@@ -15,13 +15,13 @@ export class HNApiClient {
     this.client = client;
   }
 
-  async getMaxItem(): Promise<Item> {
-    const path = '/maxitem.json?print=pretty'
-    return this.get<Item>(path);
+  async getMaxItemId(): Promise<number> {
+    const path = '/maxitem.json'
+    return this.get<number>(path);
   }
 
-  async getItemById(id: BigInt): Promise<Item> {
-    const path = `/item/${id}`;
+  async getItemById(id: number): Promise<Item> {
+    const path = `/item/${id}.json`;
     return this.get<Item>(path);
   }
 

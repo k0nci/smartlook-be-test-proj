@@ -1,13 +1,17 @@
 export interface Item {
-  id: BigInt
+  id: number;
   deleted?: true;
-  type: string;
+  type: ItemType;
   by: string;
   time: number;
   text?: string;
   dead?: true;
-  parent?: BigInt;
-  kids?: BigInt[];
+  parent?: number;
+  kids?: number[];
   url?: string;
   title?: string;
+}
+
+export const enum ItemType {
+  STORY = 'story',
 }
