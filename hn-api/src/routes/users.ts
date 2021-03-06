@@ -15,7 +15,7 @@ router.post<any, any, RegisterUserBody>('/', middlewares.validate(registerUserSc
   const app = req.app;
 
   try {
-    const user = await app.services.users.registerUser(req.body);
+    await app.services.users.registerUser(req.body);
     return res.status(204).end();
   } catch (err) {
     let httpError: HttpError;

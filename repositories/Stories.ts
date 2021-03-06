@@ -6,18 +6,22 @@ type GetOneByQuery = {
   id?: number;
   author?: string;
   title?: string;
-}
+};
 
 export class StoriesRepository extends PgRepository<Story> {
   private static TABLE_NAME = 'stories';
 
   constructor(pool: PgPool) {
-    super(pool, StoriesRepository.TABLE_NAME, serializeStories, deserializeStories);
+    super(
+      pool,
+      StoriesRepository.TABLE_NAME,
+      serializeStories,
+      deserializeStories
+    );
   }
 
   async getOne(by?: GetOneByQuery): Promise<Story | null> {
-    let query = this.pool.select('*')
-      .from(this.tableName);
+    let query = this.pool.select('*').from(this.tableName);
 
     // TODO: Use forloop throw "by" object keys
     if (by?.id !== undefined) {

@@ -39,7 +39,7 @@ router.post<any, any, CreateCollectionBody>(
 );
 
 router.get<GetCollectionByIdParams>(
-  '/:collectionId', 
+  '/:collectionId',
   middlewares.validate(getCollectionByIdSchema),
   async (req, res, next) => {
     const app = req.app;
@@ -49,13 +49,13 @@ router.get<GetCollectionByIdParams>(
     try {
       const collection = await app.services.collections.getCollectionById(collectionId);
       return res.status(200).json(collection);
-    } catch(err) {
+    } catch (err) {
       let httpErr: HttpError;
       switch (err.message) {
         case CollectionsServiceErr.COLLECTION_NOT_FOUND: {
           httpErr = new HttpError(CollectionsServiceErr.COLLECTION_NOT_FOUND, 404);
           break;
-        }      
+        }
         default: {
           LOGGER.error(err);
           httpErr = new InternalServerError();

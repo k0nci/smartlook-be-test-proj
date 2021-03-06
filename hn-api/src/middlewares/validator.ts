@@ -8,10 +8,10 @@ const validator = new Validator();
 const defaultReqSchema: Readonly<Schema> = {
   type: 'object',
   properties: {
-    query: { }, // Empty schema acts as any
-    params: { },
-    body: { },
-    headers: { },
+    query: {}, // Empty schema acts as any
+    params: {},
+    body: {},
+    headers: {},
   },
 };
 

@@ -6,7 +6,7 @@ type GetOneByQuery = {
   id?: string;
   name?: string;
   ownerId?: string;
-}
+};
 
 export class CollectionsRepository extends PgRepository<Collection> {
   private static TABLE_NAME = 'collections';
@@ -15,8 +15,7 @@ export class CollectionsRepository extends PgRepository<Collection> {
   }
 
   async getOne(by?: GetOneByQuery): Promise<Collection> {
-    let query = this.pool.select('*')
-      .from(this.tableName);
+    let query = this.pool.select('*').from(this.tableName);
 
     // TODO: Use forloop throw "by" object keys
     if (by?.id !== undefined) {
@@ -34,4 +33,8 @@ export class CollectionsRepository extends PgRepository<Collection> {
     return comments[0] || null;
   }
 
+  async updateOne(collection: Collection): Promise<void> {
+    const collectionSerialized = this.serialize([collection]);
+    await this.pool(this.tableName).update(collectionSerialized);
+  }
 }

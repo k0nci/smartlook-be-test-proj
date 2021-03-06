@@ -13,9 +13,7 @@ type RegisterUserData = {
 };
 
 export class UsersService {
-  constructor(
-    private usersRepo: UsersRepository,
-  ) { }
+  constructor(private usersRepo: UsersRepository) {}
 
   async registerUser(data: RegisterUserData): Promise<User> {
     const userExists = await this.usersRepo.getOne({ email: data.email });

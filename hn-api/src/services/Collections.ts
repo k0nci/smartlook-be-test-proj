@@ -12,10 +12,12 @@ type CreateCollectionData = {
   ownerId: string;
 };
 
+type UpdateCollectionData = {
+  name: string;
+};
+
 export class CollectionsService {
-  constructor(
-    private collectionsRepo: CollectionsRepository,
-  ) { }
+  constructor(private collectionsRepo: CollectionsRepository) {}
 
   async createCollection(data: CreateCollectionData): Promise<Collection> {
     const collectionExists = await this.collectionsRepo.getOne({
@@ -40,6 +42,17 @@ export class CollectionsService {
     if (!collection) {
       throw new Error(CollectionsServiceErr.COLLECTION_NOT_FOUND);
     }
+    return collection;
+  }
+
+  async updateCollectionWithId(id: string, data: UpdateCollectionData): Promise<Collection> {
+    const collection = await this.collectionsRepo.getOne({ id });
+    if (!collection) {
+      throw new Error(CollectionsServiceErr.COLLECTION_NOT_FOUND);
+    }
+
+    collection.name = data.name;
+    await this.collectionsRepo.updateOne(collection);
     return collection;
   }
 }
