@@ -1,5 +1,5 @@
 import { Comment } from "@smartlook/models/Comment";
-import { ResultSet } from "../pg.repository";
+import { ResultSet } from "../pg.repo";
 
 export function deserializeComments(resultSet: ResultSet): Comment[] {
   return resultSet.map((row) => ({
