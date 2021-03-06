@@ -1,4 +1,5 @@
 import ajv, { ErrorObject, SchemaObject as AjvSchemaObject, ValidateFunction } from 'ajv';
+import addFormats from 'ajv-formats';
 
 export type Schema = AjvSchemaObject;
 
@@ -14,6 +15,7 @@ export class Validator {
       messages: false,
       useDefaults: true,
     });
+    addFormats(this.ajv);
   }
 
   public compile<T = any>(schema: Schema): ValidateFunction<T> {
