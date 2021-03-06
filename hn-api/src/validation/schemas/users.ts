@@ -1,4 +1,4 @@
-export const registerUser = {
+export const registerUserSchema = {
   body: {
     type: 'object',
     properties: {

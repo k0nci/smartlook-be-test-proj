@@ -4,12 +4,18 @@ export type PgPool = Knex;
 export type ResultSet = any[];
 
 export abstract class PgRepository<T> {
-  protected pool: PgPool;
 
-  constructor(pool: PgPool) {
-    this.pool = pool;
-  }
+  constructor(
+    protected pool: PgPool,
+    protected tableName: string,
+    protected serialize: (entity: T[]) => any[],
+    protected deserialize: (row: ResultSet) => T[]
+  ) { }
 
   abstract getOne(by: { [key: string]: any }): Promise<T | null>;
-  abstract insertOne(entity: T): Promise<void>;
+  
+  async insertOne(entity: T): Promise<void> {
+    const entitiesSerialized = this.serialize([entity]);
+    return this.pool.insert(entitiesSerialized).into(this.tableName);
+  };
 }

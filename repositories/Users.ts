@@ -10,12 +10,12 @@ type GetOneByQuery = {
 export class UsersRepository extends PgRepository<User> {
   private static TABLE_NAME = 'users'
   constructor(pool: PgPool) {
-    super(pool);
+    super(pool, UsersRepository.TABLE_NAME, serializeUsers, deserializeUsers);
   }
 
   async getOne(by?: GetOneByQuery): Promise<User | null> {
     let query = this.pool.select('*')
-      .from(UsersRepository.TABLE_NAME);
+      .from(this.tableName);
 
     // TODO: Use forloop throw "by" object keys
     if (by?.id !== undefined) {
@@ -26,13 +26,8 @@ export class UsersRepository extends PgRepository<User> {
     }
 
     const resultSet = await query.limit(1);
-    const comments = deserializeUsers(resultSet);
+    const comments = this.deserialize(resultSet);
     return comments[0] || null;
-  }
-
-  async insertOne(user: User): Promise<void> {
-    const userSerialized = serializeUsers([user]);
-    return this.pool.insert(userSerialized).into(UsersRepository.TABLE_NAME);
   }
 
 }

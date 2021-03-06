@@ -3,12 +3,12 @@ import middlewares from '../middlewares';
 import { UsersServiceErr } from '../services/Users';
 import { HttpError } from '../utils/errors/HttpError';
 import { InternalServerError } from '../utils/errors/InternalServerError';
-import { registerUser } from '../validation/schemas/users';
+import { registerUserSchema } from '../validation/schemas/users';
 import { RegisterUserBody } from '../validation/types/users';
 
 export const router = Router();
 
-router.post<any, any, RegisterUserBody>('/', middlewares.validate(registerUser), async (req, res, next) => {
+router.post<any, any, RegisterUserBody>('/', middlewares.validate(registerUserSchema), async (req, res, next) => {
   const app = req.app;
 
   try {

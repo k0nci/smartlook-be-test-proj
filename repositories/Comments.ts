@@ -9,34 +9,29 @@ type GetOneByQuery = {
 }
 
 export class CommentsRepository extends PgRepository<Comment> {
-  private static TABLE_NAME = 'comments'
+  private static TABLE_NAME = 'comments';
   constructor(pool: PgPool) {
-    super(pool);
+    super(pool, CommentsRepository.TABLE_NAME, serializeComments, deserializeComments);
   }
 
-  async getOne(by: GetOneByQuery): Promise<Comment | null> {
+  async getOne(by?: GetOneByQuery): Promise<Comment | null> {
     let query = this.pool.select('*')
       .from(CommentsRepository.TABLE_NAME);
 
     // TODO: Use forloop throw "by" object keys
-    if (by.id !== undefined) {
+    if (by?.id !== undefined) {
       query = query.where('id', '=', by.id);
     }
-    if (by.parent !== undefined) {
+    if (by?.parent !== undefined) {
       query = query.where('parent', '=', by.parent);
     }
-    if (by.author !== undefined) {
+    if (by?.author !== undefined) {
       query = query.where('author', '=', by.author);
     }
 
     const resultSet = await query.limit(1);
     const comments = deserializeComments(resultSet);
     return comments[0] || null;
-  }
-
-  async insertOne(comment: Comment): Promise<void> {
-    const commentSerialized = serializeComments([comment]);
-    return this.pool.insert(commentSerialized).into(CommentsRepository.TABLE_NAME);
   }
 
 }
