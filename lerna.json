@@ -2,7 +2,8 @@
   "packages": [
     "models",
     "repositories",
-    "hn-sync"
+    "hn-sync",
+    "hn-api"
   ],
   "version": "0.0.0"
 }

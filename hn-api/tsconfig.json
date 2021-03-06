@@ -1,4 +1,10 @@
 {
   "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "types": [
+      "./src/types/express"
+    ]
+  },
   "include": ["./src"]
 }
