@@ -20,3 +20,22 @@ export const getCollectionByIdSchema = {
     additionalProperties: false,
   },
 };
+
+export const updateCollectionWithIdSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      collectionId: { type: 'string' },
+    },
+    required: ['collectionId'],
+    additionalProperties: false,
+  },
+  body: {
+    type: 'object',
+    properties: {
+      name: { type: 'string', minLength: 1 },
+    },
+    required: ['name'],
+    additionalProperties: false,
+  },
+};

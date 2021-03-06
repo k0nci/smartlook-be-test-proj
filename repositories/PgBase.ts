@@ -11,7 +11,7 @@ export abstract class PgRepository<T> {
     protected deserialize: (row: ResultSet) => T[]
   ) {}
 
-  abstract getOne(by: { [key: string]: any }): Promise<T | null>;
+  abstract getOne(by?: { [key: string]: any }): Promise<T | null>;
 
   async insertOne(entity: T): Promise<void> {
     const entitiesSerialized = this.serialize([entity]);

@@ -6,3 +6,11 @@ export type CreateCollectionBody = {
 export type GetCollectionByIdParams = {
   collectionId: string;
 };
+
+export type UpdateCollectionWithIdParams = {
+  collectionId: string;
+};
+
+export type UpdateCollectionWithIdBody = {
+  name: string;
+};
