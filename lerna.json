@@ -1,5 +1,6 @@
 {
   "packages": [
+    "models",
     "repositories"
   ],
   "version": "0.0.0"
