@@ -1,5 +1,5 @@
 import { Story } from "@smartlook/models/Story";
-import { ResultSet } from "../pg.repo";
+import { ResultSet } from "../PgBase";
 
 export function deserializeStories(resultSet: ResultSet): Story[] {
   return resultSet.map((row) => ({

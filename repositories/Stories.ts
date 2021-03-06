@@ -1,6 +1,6 @@
 import { Story } from "@smartlook/models/Story";
-import { deserializeStories, serializeStories } from "./mappers/story.mapper";
-import { PgPool, PgRepository } from "./pg.repo";
+import { deserializeStories, serializeStories } from "./mappers/story";
+import { PgPool, PgRepository } from "./PgBase";
 
 type GetOneByQuery = {
   id?: number;

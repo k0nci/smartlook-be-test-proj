@@ -1,6 +1,6 @@
-import { StoriesRepository } from "@smartlook/repositories/src/stories.repo";
-import { HNApiClient } from "../../clients/hn-api.client";
-import { ItemType } from "../../clients/hn-api.client/models/Item";
+import { StoriesRepository } from "@smartlook/repositories/stories";
+import { HNApiClient } from "../../clients/hn-api";
+import { ItemType } from "../../clients/hn-api/models/Item";
 
 export class SyncStoriesAndComments {
   readonly JOB_NAME = 'sync-stories-and-comments';

@@ -1,5 +1,5 @@
-import { AxiosInstance, AxiosRequestConfig } from "axios";
-import { Item } from "./models/Item";
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Item } from './models/Item';
 
 export const enum HNClientErr {
   DATA_UNAVAILABE = 'Unable to GET data from HackerNews API',

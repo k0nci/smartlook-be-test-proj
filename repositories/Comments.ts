@@ -1,10 +1,10 @@
 import { Comment } from '@smartlook/models/Comment';
-import { deserializeComments, serializeComments } from './mappers/comment.mapper';
-import { PgPool, PgRepository } from './pg.repo';
+import { deserializeComments, serializeComments } from './mappers/comment';
+import { PgPool, PgRepository } from './PgBase';
 
 type GetOneByQuery = {
-  id?: BigInt;
-  parent?: BigInt;
+  id?: number;
+  parent?: number;
   author?: string;
 }
 
