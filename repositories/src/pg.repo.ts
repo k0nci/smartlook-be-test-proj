@@ -11,6 +11,6 @@ export abstract class PgRepository<T> {
     
   }
 
-  abstract getOne(by: { [key: string]: any }): Promise<T>;
+  abstract getOne(by: { [key: string]: any }): Promise<T | null>;
   abstract insertOne(entity: T): Promise<void>;
 }
