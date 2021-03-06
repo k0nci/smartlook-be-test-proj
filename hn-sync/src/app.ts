@@ -3,7 +3,7 @@ import axios from 'axios';
 import { CronJob } from 'cron';
 import knex from 'knex';
 import { HNApiClient } from './clients/hn-api';
-import { SyncStoriesAndComments } from './jobs/sync-stories-and-comments.ts';
+import { SyncStoriesAndComments } from './jobs/sync-stories-and-comments';
 
 const HN_API_URL = process.env.HN_API_URL || 'https://hacker-news.firebaseio.com/v0/';
 
