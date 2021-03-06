@@ -11,7 +11,7 @@ import { getLogger } from '../utils';
 
 const LOGGER = getLogger();
 
-function normalizePort(val: string = '8000') {
+function normalizePort(val: string = '8000'): number {
   const port = parseInt(val, 10);
 
   if (isNaN(port) || port <= 0) {

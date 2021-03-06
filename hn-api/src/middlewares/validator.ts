@@ -26,10 +26,10 @@ export function middleware(schema: IRequestSchema): RequestHandler {
   const reqSchema = {
     ...defaultReqSchema,
     properties: {
-      query: schema.query || defaultReqSchema.properties.query,
-      params: schema.params || defaultReqSchema.properties.params,
-      body: schema.body || defaultReqSchema.properties.body,
-      headers: schema.headers || defaultReqSchema.properties.headers,
+      query: schema.query ?? defaultReqSchema.properties.query,
+      params: schema.params ?? defaultReqSchema.properties.params,
+      body: schema.body ?? defaultReqSchema.properties.body,
+      headers: schema.headers ?? defaultReqSchema.properties.headers,
     },
   };
   // Compile schema to validate function
@@ -46,7 +46,7 @@ export function middleware(schema: IRequestSchema): RequestHandler {
     // Validate request data
     validateFunction(reqData);
     // Get errors from validate function
-    const errors = validateFunction.errors || [];
+    const errors = validateFunction.errors ?? [];
     const validationErrors = parseErrors(errors);
 
     if (validationErrors.length !== 0) {

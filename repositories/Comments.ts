@@ -6,7 +6,7 @@ type GetOneByQuery = {
   id?: number;
   parent?: number;
   author?: string;
-}
+};
 
 export class CommentsRepository extends PgRepository<Comment> {
   private static TABLE_NAME = 'comments';
@@ -15,8 +15,7 @@ export class CommentsRepository extends PgRepository<Comment> {
   }
 
   async getOne(by?: GetOneByQuery): Promise<Comment | null> {
-    let query = this.pool.select('*')
-      .from(CommentsRepository.TABLE_NAME);
+    let query = this.pool.select('*').from(CommentsRepository.TABLE_NAME);
 
     // TODO: Use forloop throw "by" object keys
     if (by?.id !== undefined) {
@@ -33,5 +32,4 @@ export class CommentsRepository extends PgRepository<Comment> {
     const comments = deserializeComments(resultSet);
     return comments[0] || null;
   }
-
 }

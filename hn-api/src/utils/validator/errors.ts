@@ -6,7 +6,7 @@ export type IValidationError = {
 };
 
 export function parseErrors(errors: ErrorObject[]): IValidationError[] {
-  return errors.map(error => parseError(error));
+  return errors.map((error) => parseError(error));
 }
 
 export function parseError(error: ErrorObject): IValidationError {
@@ -15,11 +15,11 @@ export function parseError(error: ErrorObject): IValidationError {
 
   switch (error.keyword) {
     case 'required': {
-      ePath += `/${error.params['missingProperty']}`;
+      ePath += `/${error.params.missingProperty}`;
       break;
     }
     case 'additionalProperties': {
-      ePath += `/${error.params['additionalProperty']}`;
+      ePath += `/${error.params.additionalProperty}`;
       eMessage = 'forbidden';
       break;
     }

@@ -33,6 +33,6 @@ export class UsersService {
 
   private async createPasswordHash(password: string): Promise<string> {
     // TODO: Configure rounds from config
-    return bcrypt.hash(password, 14);
+    return await bcrypt.hash(password, 14);
   }
 }

@@ -1,8 +1,8 @@
-import { User } from "@smartlook/models/User";
-import { ResultSet } from "../PgBase";
+import { User } from '@smartlook/models/User';
+import { ResultSet } from '../PgBase';
 
 export function deserializeUsers(resultSet: ResultSet): User[] {
-  return resultSet.map(row => row as User);
+  return resultSet.map((row) => row as User);
 }
 
 type UserSerialized = {
@@ -12,5 +12,5 @@ type UserSerialized = {
 };
 
 export function serializeUsers(users: User[]): UserSerialized[] {
-  return users.map(one => one as UserSerialized);
+  return users.map((one) => one as UserSerialized);
 }

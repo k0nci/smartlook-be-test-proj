@@ -1,15 +1,15 @@
-import ajv, { ErrorObject, SchemaObject as AjvSchemaObject, ValidateFunction } from 'ajv';
+import Ajv, { ErrorObject, SchemaObject as AjvSchemaObject, ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
 
 export type Schema = AjvSchemaObject;
 
 export class Validator {
-  private ajv: ajv;
+  private ajv: Ajv;
 
   constructor() {
     // TODO: Add ability to change config
     // TODO: Add ability to define custom keywords
-    this.ajv = new ajv({
+    this.ajv = new Ajv({
       allErrors: true,
       coerceTypes: true,
       messages: false,
@@ -24,7 +24,6 @@ export class Validator {
 
   public validate(schema: Schema, data: any): ErrorObject[] {
     this.ajv.validate(schema, data);
-    return this.ajv.errors || [];
+    return this.ajv.errors ?? [];
   }
-
 }

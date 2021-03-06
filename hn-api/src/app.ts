@@ -21,12 +21,12 @@ const NODE_ENV = process.env.NODE_ENV;
 const dbPool = knex({
   client: 'pg',
   connection: {
-    host : '127.0.0.1',
+    host: '127.0.0.1',
     port: 5432,
-    user : 'hacker_news_stories',
-    password : 'hacker_news_stories',
-    database : 'hacker_news_stories'
-  }
+    user: 'hacker_news_stories',
+    password: 'hacker_news_stories',
+    database: 'hacker_news_stories',
+  },
 });
 
 export const app = express();

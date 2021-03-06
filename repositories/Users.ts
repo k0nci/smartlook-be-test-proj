@@ -5,17 +5,16 @@ import { PgPool, PgRepository } from './PgBase';
 type GetOneByQuery = {
   id?: string;
   email?: string;
-}
+};
 
 export class UsersRepository extends PgRepository<User> {
-  private static TABLE_NAME = 'users'
+  private static TABLE_NAME = 'users';
   constructor(pool: PgPool) {
     super(pool, UsersRepository.TABLE_NAME, serializeUsers, deserializeUsers);
   }
 
   async getOne(by?: GetOneByQuery): Promise<User | null> {
-    let query = this.pool.select('*')
-      .from(this.tableName);
+    let query = this.pool.select('*').from(this.tableName);
 
     // TODO: Use forloop throw "by" object keys
     if (by?.id !== undefined) {
@@ -29,5 +28,4 @@ export class UsersRepository extends PgRepository<User> {
     const comments = this.deserialize(resultSet);
     return comments[0] || null;
   }
-
 }

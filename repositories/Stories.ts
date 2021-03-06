@@ -12,12 +12,7 @@ export class StoriesRepository extends PgRepository<Story> {
   private static TABLE_NAME = 'stories';
 
   constructor(pool: PgPool) {
-    super(
-      pool,
-      StoriesRepository.TABLE_NAME,
-      serializeStories,
-      deserializeStories
-    );
+    super(pool, StoriesRepository.TABLE_NAME, serializeStories, deserializeStories);
   }
 
   async getOne(by?: GetOneByQuery): Promise<Story | null> {
