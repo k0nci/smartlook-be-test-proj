@@ -1,6 +1,6 @@
 import { Comment } from '@smartlook/models/Comment';
 import { deserializeComments } from './deserializers/comment.deserializer';
-import { PgPool, PgRepository } from './pg.repository';
+import { PgPool, PgRepository } from './pg.repo';
 
 type GetOneByQuery = {
   id?: BigInt;
@@ -18,7 +18,7 @@ export class CommentsRepository extends PgRepository<Comment> {
     let query = this.pool.select('*')
       .from(CommentsRepository.TABLE_NAME);
 
-    // TODO: Use forloop throw object keys
+    // TODO: Use forloop throw "by" object keys
     if (by.id !== undefined) {
       query = query.where('id', '=', by.id);
     }
