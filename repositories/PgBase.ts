@@ -8,7 +8,6 @@ export abstract class PgRepository<T> {
 
   constructor(pool: PgPool) {
     this.pool = pool;
-    
   }
 
   abstract getOne(by: { [key: string]: any }): Promise<T | null>;
