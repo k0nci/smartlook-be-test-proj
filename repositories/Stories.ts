@@ -1,6 +1,6 @@
-import { Story } from "@smartlook/models/Story";
-import { deserializeStories, serializeStories } from "./mappers/story";
-import { PgPool, PgRepository } from "./PgBase";
+import { Story } from '@smartlook/models/Story';
+import { deserializeStories, serializeStories } from './mappers/story';
+import { PgPool, PgRepository } from './PgBase';
 
 type GetOneByQuery = {
   id?: number;
@@ -10,6 +10,7 @@ type GetOneByQuery = {
 
 export class StoriesRepository extends PgRepository<Story> {
   private static TABLE_NAME = 'stories';
+
   constructor(pool: PgPool) {
     super(pool, StoriesRepository.TABLE_NAME, serializeStories, deserializeStories);
   }
@@ -33,5 +34,4 @@ export class StoriesRepository extends PgRepository<Story> {
     const comments = this.deserialize(resultSet);
     return comments[0] || null;
   }
-
 }

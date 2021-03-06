@@ -30,12 +30,11 @@ export class UsersService {
       password: pwdHash,
     };
     await this.usersRepo.insertOne(user);
-    return user
+    return user;
   }
 
   private async createPasswordHash(password: string): Promise<string> {
     // TODO: Configure rounds from config
     return bcrypt.hash(password, 14);
   }
-
 }
