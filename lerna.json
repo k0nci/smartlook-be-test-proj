@@ -1,7 +1,8 @@
 {
   "packages": [
     "models",
-    "repositories"
+    "repositories",
+    "hn-sync"
   ],
   "version": "0.0.0"
 }

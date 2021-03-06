@@ -2,16 +2,23 @@
   "name": "hn-sync",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/app.ts",
   "scripts": {
+    "start:ts": "ts-node --files --project ./tsconfig.json ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Matej Koncal",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^4.2.3"
+    "@smartlook/repositories": "^1.0.0",
+    "@types/cron": "^1.7.2",
+    "typescript": "^4.2.3",
+    "ts-node": "^9.1.1"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "cron": "^1.8.2",
+    "knex": "^0.95.1",
+    "pg": "^8.5.1"
   }
 }
