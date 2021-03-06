@@ -4,6 +4,7 @@ import { CollectionsRepository } from '@smartlook/repositories/Collections';
 
 export const enum CollectionsServiceErr {
   COLLECTION_EXISTS = 'COLLECTION_EXISTS',
+  COLLECTION_NOT_FOUND = 'COLLECTION_NOT_FOUND',
 }
 
 type CreateCollectionData = {
@@ -35,6 +36,10 @@ export class CollectionsService {
   }
 
   async getCollectionById(id: string): Promise<Collection> {
-    return this.collectionsRepo.getOne({ id });
+    const collection = await this.collectionsRepo.getOne({ id });
+    if (!collection) {
+      throw new Error(CollectionsServiceErr.COLLECTION_NOT_FOUND);
+    }
+    return collection;
   }
 }

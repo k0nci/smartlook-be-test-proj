@@ -9,3 +9,14 @@ export const createCollectionSchema = {
     additionalProperties: false,
   },
 };
+
+export const getCollectionByIdSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      collectionId: { type: 'string' }, // TODO: add uuid format (predecessor implement custom validator in ajv)
+    },
+    required: ['collectionId'],
+    additionalProperties: false,
+  },
+};
