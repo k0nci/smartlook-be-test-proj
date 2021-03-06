@@ -1,8 +1,8 @@
 export interface Comment {
-	id: BigInt;
+	id: number;
 	author: string;
 	createdAt: number;
 	content: string;
-	parent: BigInt;
-	kids: BigInt[];
+	parent: number;
+	kids: number[];
 }

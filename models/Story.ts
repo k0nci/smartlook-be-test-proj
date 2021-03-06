@@ -1,8 +1,8 @@
 export interface Story {
-	id: BigInt;
+	id: number;
 	author: string;
 	createdAt: number;
 	title: string;
-	kids: BigInt[];
-	url: string;
+	kids: number[];
+	url: string | null;
 }
