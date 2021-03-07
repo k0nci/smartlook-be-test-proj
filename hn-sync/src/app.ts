@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { CommentsRepository } from '@smartlook/repositories/Comments';
 import { StoriesRepository } from '@smartlook/repositories/stories';
 import axios from 'axios';
@@ -59,4 +60,4 @@ for (const job of JOBS_TO_RUN) {
   runningJobs.push(cronJob);
 }
 
-LOGGER.info(`Started ${runningJobs.length}/${JOBS_TO_RUN.length}`);
+LOGGER.info(`Started ${runningJobs.length}/${JOBS_TO_RUN.length} jobs`);
