@@ -22,6 +22,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
+    "@smartlook/api-clients": "^1.0.0",
     "@smartlook/models": "^1.0.0",
     "@smartlook/repositories": "^1.0.0",
     "ajv": "^7.1.1",

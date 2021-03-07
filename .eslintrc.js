@@ -27,5 +27,7 @@ module.exports = {
     ],
     "comma-dangle": "off",
     "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
+    "no-return-await": "off",
+    "@typescript-eslint/return-await": ["error", "in-try-catch"]
   },
 };

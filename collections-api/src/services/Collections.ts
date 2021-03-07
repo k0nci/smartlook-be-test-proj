@@ -3,6 +3,8 @@ import { Collection } from '@smartlook/models/Collection';
 import { CollectionWithStories } from '@smartlook/models/CollectionWithStories';
 import { CollectionsRepository } from '@smartlook/repositories/Collections';
 import { StoriesRepository } from '@smartlook/repositories/Stories';
+import { StoriesService } from './Stories';
+import { Story } from '@smartlook/models/Story';
 
 export const enum CollectionsServiceErr {
   FORBIDDEN = 'FORBIDDEN',
@@ -19,7 +21,11 @@ type UpdateCollectionData = {
 };
 
 export class CollectionsService {
-  constructor(private collectionsRepo: CollectionsRepository, private storiesRepo: StoriesRepository) {}
+  constructor(
+    private collectionsRepo: CollectionsRepository,
+    private storiesService: StoriesService,
+    private storiesRepo: StoriesRepository,
+  ) {}
 
   async createCollection(ownerId: string, data: CreateCollectionData): Promise<Collection> {
     const collectionExists = await this.collectionsRepo.getOne({
@@ -39,23 +45,7 @@ export class CollectionsService {
     return collection;
   }
 
-  async getCollectionByIdWithStories(agentId: string, id: string): Promise<CollectionWithStories> {
-    const collection = await this.collectionsRepo.getOne({ id });
-    if (!collection) {
-      throw new Error(CollectionsServiceErr.COLLECTION_NOT_FOUND);
-    }
-    if (collection.ownerId !== agentId) {
-      throw new Error(CollectionsServiceErr.FORBIDDEN);
-    }
-
-    const collectionStories = await this.storiesRepo.getAll({ collectionId: id });
-    return {
-      ...collection,
-      stories: collectionStories,
-    };
-  }
-
-  async updateCollectionWithId(agentId: string, collectionId: string, data: UpdateCollectionData): Promise<Collection> {
+  async getCollectionById(agentId: string, collectionId: string): Promise<Collection> {
     const collection = await this.collectionsRepo.getOne({ id: collectionId });
     if (!collection) {
       throw new Error(CollectionsServiceErr.COLLECTION_NOT_FOUND);
@@ -63,9 +53,51 @@ export class CollectionsService {
     if (collection.ownerId !== agentId) {
       throw new Error(CollectionsServiceErr.FORBIDDEN);
     }
+    return collection;
+  }
+
+  async getCollectionByIdWithStories(agentId: string, collectionId: string): Promise<CollectionWithStories> {
+    const collection = await this.getCollectionById(agentId, collectionId);
+
+    const collectionStories = await this.storiesRepo.getAll({ collectionId });
+    return {
+      ...collection,
+      stories: collectionStories,
+    };
+  }
+
+  async updateCollectionWithId(agentId: string, collectionId: string, data: UpdateCollectionData): Promise<Collection> {
+    const collection = await this.getCollectionById(agentId, collectionId);
 
     collection.name = data.name;
     await this.collectionsRepo.updateOne(collection);
     return collection;
   }
+
+  async insertStoriesToCollection(
+    agentId: string,
+    collectionId: string,
+    storyIds: number[],
+  ): Promise<{ errors: Array<{ storyId: number; code: string }> }> {
+    const collection = await this.getCollectionById(agentId, collectionId);
+
+    const stories = await Promise.all(
+      storyIds.map(async (storyId) => this.storiesService.fetchStoryById(storyId)),
+    );
+    const errors: Array<{ storyId: number; code: string }> = [];
+    const storiesFound: Story[] = [];
+    for (const story of stories) {
+      if (!story.value) {
+        errors.push({
+          storyId: story.id,
+          code: story.code ?? 'ITEM_ERROR',
+        });
+      } else {
+        storiesFound.push(story.value);
+      }
+    }
+    await this.storiesService.upsertStories(storiesFound);
+    await this.collectionsRepo.upsertStoriesToCollection(collection.id, storiesFound);
+    return { errors };
+  };
 }

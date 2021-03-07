@@ -51,4 +51,8 @@ export class StoriesRepository extends PgRepository<Story> {
     const resultSet = await query.select(`${this.tableName}.*`);
     return this.deserialize(resultSet);
   }
+
+  async upsertAll(stories: Story[]): Promise<void> {
+    await this.pool(this.tableName).insert(stories).onConflict('id').merge();
+  }
 }

@@ -47,10 +47,10 @@ export class UsersService {
 
   private async createPasswordHash(password: string): Promise<string> {
     // TODO: Configure rounds from config
-    return await bcrypt.hash(password, 14);
+    return bcrypt.hash(password, 14);
   }
 
   private async checkPassword(userPwd: string, providedPwd: string): Promise<boolean> {
-    return await bcrypt.compare(providedPwd, userPwd);
+    return bcrypt.compare(providedPwd, userPwd);
   }
 }

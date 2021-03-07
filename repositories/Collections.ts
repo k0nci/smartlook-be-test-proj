@@ -1,4 +1,5 @@
 import { Collection } from '@smartlook/models/Collection';
+import { Story } from '@smartlook/models/Story';
 import { deserializeCollections, serializeCollections } from './mappers/collection';
 import { PgPool, PgRepository } from './PgBase';
 
@@ -36,5 +37,17 @@ export class CollectionsRepository extends PgRepository<Collection> {
   async updateOne(collection: Collection): Promise<void> {
     const collectionSerialized = this.serialize([collection]);
     await this.pool(this.tableName).update(collectionSerialized);
+  }
+
+  async upsertStoriesToCollection(collectionId: string, stories: Story[]): Promise<void> {
+    const collectionStories: Array<{ collection_id: string; story_id: number; }> = 
+      stories.map((story) => ({
+        collection_id: collectionId,
+        story_id: story.id,
+      }));
+    await this.pool('collections_stories')
+      .insert(collectionStories)
+      .onConflict(['collection_id', 'story_id'])
+      .merge();
   }
 }
