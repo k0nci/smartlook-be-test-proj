@@ -54,4 +54,9 @@ export class CollectionsRepository extends PgRepository<Collection> {
       .onConflict(['collection_id', 'story_id'])
       .merge();
   }
+
+  async deleteOne(collection: Collection): Promise<void> {
+    await this.pool('collections_stories').where('collection_id', '=', collection.id);
+    await this.pool(this.tableName).where('id', '=', collection.id);
+  }
 }

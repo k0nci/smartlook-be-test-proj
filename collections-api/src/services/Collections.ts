@@ -98,4 +98,10 @@ export class CollectionsService {
     await this.collectionsRepo.upsertStoriesToCollection(collection.id, storiesFound);
     return { errors };
   }
+
+  async deleteCollection(agentId: string, collectionId: string): Promise<void> {
+    const collection = await this.getCollectionByIdAsOwner(agentId, collectionId);
+    await this.collectionsRepo.deleteOne(collection);
+  }
+
 }

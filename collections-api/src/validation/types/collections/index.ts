@@ -6,10 +6,14 @@ export interface GetCollectionByIdParams {
   collectionId: string;
 }
 
-export interface UpdateCollectionWithIdParams {
+export interface UpdateCollectionByIdParams {
   collectionId: string;
 }
 
-export interface UpdateCollectionWithIdBody {
+export interface UpdateCollectionByIdBody {
   name: string;
+}
+
+export interface DeleteCollectionByIdParams {
+  collectionId: string;
 }

@@ -15,6 +15,7 @@ module.exports = {
     "@typescript-eslint/semi": ["error", "always"],
     "quotes": ["error", "single"],
     "eol-last": ["error", "always"],
+    "no-trailing-spaces": "error",
     'space-before-function-paren': 'off',
     'no-useless-constructor': 'off',
     'max-len': ['error', { code: 120 }],

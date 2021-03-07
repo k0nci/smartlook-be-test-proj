@@ -9,14 +9,16 @@ import { HttpError } from '../../utils/errors/HttpError';
 import { InternalServerError } from '../../utils/errors/InternalServerError';
 import {
   createCollectionSchema,
+  deleteCollectionByIdSchema,
   getCollectionByIdSchema,
-  updateCollectionWithIdSchema,
+  updateCollectionByIdSchema,
 } from '../../validation/schemas/collections';
 import {
   CreateCollectionBody,
+  DeleteCollectionByIdParams,
   GetCollectionByIdParams,
-  UpdateCollectionWithIdBody,
-  UpdateCollectionWithIdParams,
+  UpdateCollectionByIdBody,
+  UpdateCollectionByIdParams,
 } from '../../validation/types/collections';
 import { router as storiesRouter } from './stories';
 
@@ -89,10 +91,10 @@ router.get<GetCollectionByIdParams, CollectionWithStories>(
   },
 );
 
-router.patch<UpdateCollectionWithIdParams, any, UpdateCollectionWithIdBody>(
+router.patch<UpdateCollectionByIdParams, any, UpdateCollectionByIdBody>(
   '/:collectionId',
   middlewares.authenticate(ACCESS_TOKEN_SECRET),
-  middlewares.validate(updateCollectionWithIdSchema),
+  middlewares.validate(updateCollectionByIdSchema),
   async (req, res, next) => {
     const app = req.app;
 
@@ -101,6 +103,40 @@ router.patch<UpdateCollectionWithIdParams, any, UpdateCollectionWithIdBody>(
 
     try {
       await app.services.collections.updateCollectionWithId(agent.userId, collectionId, req.body);
+      return res.status(204).end();
+    } catch (err) {
+      let httpErr: HttpError;
+      switch (err.message) {
+        case CollectionsServiceErr.COLLECTION_NOT_FOUND: {
+          httpErr = new HttpError(404, CollectionsServiceErr.COLLECTION_NOT_FOUND);
+          break;
+        }
+        case CollectionsServiceErr.FORBIDDEN: {
+          httpErr = new ForbiddenError();
+          break;
+        }
+        default: {
+          httpErr = new InternalServerError(err);
+          break;
+        }
+      }
+      return next(httpErr);
+    }
+  },
+);
+
+router.delete<any, any, DeleteCollectionByIdParams>(
+  '/:collectionId',
+  middlewares.authenticate(ACCESS_TOKEN_SECRET),
+  middlewares.validate(deleteCollectionByIdSchema),
+  async (req, res, next) => {
+    const app = req.app;
+
+    const agent = req.user!;
+    const { collectionId } = req.params;
+
+    try {
+      await app.services.collections.deleteCollection(agent.userId, collectionId);
       return res.status(204).end();
     } catch (err) {
       let httpErr: HttpError;
