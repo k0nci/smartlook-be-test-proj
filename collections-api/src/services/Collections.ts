@@ -94,8 +94,16 @@ export class CollectionsService {
         storiesFound.push(story.value);
       }
     }
-    await this.storiesService.upsertStories(storiesFound);
-    await this.collectionsRepo.upsertStoriesToCollection(collection.id, storiesFound);
+
+    const tx = await this.collectionsRepo.initTransaction();
+    try {
+      await this.storiesService.upsertStories(storiesFound, tx);
+      await this.collectionsRepo.upsertStoriesToCollection(collection.id, storiesFound, tx);
+      await tx.commit();
+    } catch (err) {
+      await tx.rollback();
+      throw err;
+    }
     return { errors };
   }
 

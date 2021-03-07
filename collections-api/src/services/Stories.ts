@@ -1,6 +1,7 @@
 import { HNApiClient } from '@smartlook/api-clients/hn';
 import { ItemType } from '@smartlook/api-clients/hn/models/Item';
 import { Story } from '@smartlook/models/Story';
+import { Transaction } from '@smartlook/repositories/PgAbstract';
 import { StoriesRepository } from '@smartlook/repositories/Stories';
 
 export class StoriesService {
@@ -42,8 +43,8 @@ export class StoriesService {
     };
   }
 
-  async upsertStories(stories: Story[]): Promise<void> {
-    return this.storiesRepo.upsertAll(stories);
+  async upsertStories(stories: Story[], tx: Transaction | null = null): Promise<void> {
+    return this.storiesRepo.upsertAll(stories, tx);
   }
 
   async getStoriesByCollectionId(collectionId: string): Promise<Story[]> {
