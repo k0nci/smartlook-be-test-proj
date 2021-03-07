@@ -1,5 +1,5 @@
 import { Collection } from '@smartlook/models/Collection';
-import { ResultSet } from '../PgBase';
+import { ResultSet } from '../PgAbstract';
 
 export function deserializeCollections(resultSet: ResultSet): Collection[] {
   return resultSet.map((row) => ({

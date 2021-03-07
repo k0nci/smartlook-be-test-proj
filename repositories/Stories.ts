@@ -1,6 +1,6 @@
 import { Story } from '@smartlook/models/Story';
 import { deserializeStories, serializeStories } from './mappers/story';
-import { PgPool, PgRepository } from './PgBase';
+import { PgPool, PgRepository, Transaction } from './PgAbstract';
 
 type GetOneByQuery = {
   id?: number;
@@ -19,7 +19,7 @@ export class StoriesRepository extends PgRepository<Story> {
     super(pool, StoriesRepository.TABLE_NAME, serializeStories, deserializeStories);
   }
 
-  async getOne(by?: GetOneByQuery): Promise<Story | null> {
+  async getOne(by?: GetOneByQuery, tx: Transaction | null = null): Promise<Story | null> {
     let query = this.pool.select('*').from(this.tableName);
 
     // TODO: Use forloop throw "by" object keys
@@ -32,13 +32,14 @@ export class StoriesRepository extends PgRepository<Story> {
     if (by?.title !== undefined) {
       query = query.where('title', '=', by.title);
     }
+    query = query.limit(1);
 
-    const resultSet = await query.limit(1);
+    const resultSet = await this.execQuery(query, tx);
     const comments = this.deserialize(resultSet);
     return comments[0] || null;
   }
 
-  async getAll(by?: GetAllByQuery): Promise<Story[]> {
+  async getAll(by?: GetAllByQuery, tx: Transaction | null = null): Promise<Story[]> {
     let query = this.pool(this.tableName);
 
     if (by?.collectionId !== undefined) {
@@ -47,16 +48,18 @@ export class StoriesRepository extends PgRepository<Story> {
         .join('collections', 'collections.id', 'collections_stories.collection_id')
         .where('collections.id', '=', by.collectionId);
     }
+    query = query.select(`${this.tableName}.*`);
 
-    const resultSet = await query.select(`${this.tableName}.*`);
+    const resultSet = await this.execQuery(query, tx);
     return this.deserialize(resultSet);
   }
 
-  async upsertAll(stories: Story[]): Promise<void> {
+  async upsertAll(stories: Story[], tx: Transaction | null = null): Promise<void> {
     if (stories.length === 0) {
       return;
     }
     const storiesSerialized = this.serialize(stories);
-    await this.pool(this.tableName).insert(storiesSerialized).onConflict('id').merge();
+    const query = this.pool(this.tableName).insert(storiesSerialized).onConflict('id').merge();
+    await this.execQuery(query, tx);
   }
 }

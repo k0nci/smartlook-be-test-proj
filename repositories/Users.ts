@@ -1,6 +1,6 @@
 import { User } from '@smartlook/models/User';
 import { deserializeUsers, serializeUsers } from './mappers/user';
-import { PgPool, PgRepository } from './PgBase';
+import { PgPool, PgRepository, Transaction } from './PgAbstract';
 
 type GetOneByQuery = {
   id?: string;
@@ -13,7 +13,7 @@ export class UsersRepository extends PgRepository<User> {
     super(pool, UsersRepository.TABLE_NAME, serializeUsers, deserializeUsers);
   }
 
-  async getOne(by?: GetOneByQuery): Promise<User | null> {
+  async getOne(by?: GetOneByQuery, tx: Transaction | null = null): Promise<User | null> {
     let query = this.pool.select('*').from(this.tableName);
 
     // TODO: Use forloop throw "by" object keys
@@ -23,8 +23,9 @@ export class UsersRepository extends PgRepository<User> {
     if (by?.email !== undefined) {
       query = query.where('email', '=', by.email);
     }
+    query = query.limit(1);
 
-    const resultSet = await query.limit(1);
+    const resultSet = await this.execQuery(query, tx);
     const comments = this.deserialize(resultSet);
     return comments[0] || null;
   }
