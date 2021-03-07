@@ -16,7 +16,7 @@ services:
   migrate:
     image: migrate/migrate:v4.14.1
     volumes:
-      - ./migrations:/migrations
+      - ./database/migrations:/migrations
     command: [
       "-verbose", 
       "-path=/migrations/",
