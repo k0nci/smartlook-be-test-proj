@@ -1,13 +1,10 @@
 import { Router } from 'express';
 import middlewares from '../middlewares';
 import { UsersServiceErr } from '../services/Users';
-import { getLogger } from '../utils';
 import { HttpError } from '../utils/errors/HttpError';
 import { InternalServerError } from '../utils/errors/InternalServerError';
 import { createTokensSchema } from '../validation/schemas/tokens';
 import { CreateTokensBody } from '../validation/types/tokens';
-
-const LOGGER = getLogger();
 
 export const router = Router();
 
@@ -29,8 +26,7 @@ router.post<any, { userId: string; accessToken: string }, CreateTokensBody>(
           break;
         }
         default: {
-          LOGGER.error(err);
-          httpErr = new InternalServerError();
+          httpErr = new InternalServerError(err);
           break;
         }
       }

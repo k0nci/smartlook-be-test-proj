@@ -1,13 +1,10 @@
 import { Router } from 'express';
 import middlewares from '../middlewares';
 import { UsersServiceErr } from '../services/Users';
-import { getLogger } from '../utils';
 import { HttpError } from '../utils/errors/HttpError';
 import { InternalServerError } from '../utils/errors/InternalServerError';
 import { registerUserSchema } from '../validation/schemas/users';
 import { RegisterUserBody } from '../validation/types/users';
-
-const LOGGER = getLogger();
 
 export const router = Router();
 
@@ -25,8 +22,7 @@ router.post<any, any, RegisterUserBody>('/', middlewares.validate(registerUserSc
         break;
       }
       default: {
-        LOGGER.error(err);
-        httpError = new InternalServerError();
+        httpError = new InternalServerError(err);
         break;
       }
     }

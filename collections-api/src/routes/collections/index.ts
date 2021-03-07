@@ -4,7 +4,6 @@ import { CollectionWithStories } from '@smartlook/models/CollectionWithStories';
 import { Router } from 'express';
 import middlewares from '../../middlewares';
 import { CollectionsServiceErr } from '../../services/Collections';
-import { getLogger } from '../../utils';
 import { ForbiddenError } from '../../utils/errors/ForbiddenError';
 import { HttpError } from '../../utils/errors/HttpError';
 import { InternalServerError } from '../../utils/errors/InternalServerError';
@@ -22,8 +21,6 @@ import {
 import { router as storiesRouter } from './stories';
 
 const ACCESS_TOKEN_SECRET = 'oZLmwGq6mj&PG47s';
-
-const LOGGER = getLogger();
 
 export const router = Router();
 
@@ -49,8 +46,7 @@ router.post<any, Collection, CreateCollectionBody>(
           break;
         }
         default: {
-          LOGGER.error(err);
-          httpErr = new InternalServerError();
+          httpErr = new InternalServerError(err);
           break;
         }
       }
@@ -84,8 +80,7 @@ router.get<GetCollectionByIdParams, CollectionWithStories>(
           break;
         }
         default: {
-          LOGGER.error(err);
-          httpErr = new InternalServerError();
+          httpErr = new InternalServerError(err);
           break;
         }
       }
@@ -119,8 +114,7 @@ router.patch<UpdateCollectionWithIdParams, any, UpdateCollectionWithIdBody>(
           break;
         }
         default: {
-          LOGGER.error(err);
-          httpErr = new InternalServerError();
+          httpErr = new InternalServerError(err);
           break;
         }
       }
