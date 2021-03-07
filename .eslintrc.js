@@ -11,11 +11,11 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    "semi": "off",
-    "@typescript-eslint/semi": ["error", "always"],
-    "quotes": ["error", "single"],
-    "eol-last": ["error", "always"],
-    "no-trailing-spaces": "error",
+    'semi': 'off',
+    '@typescript-eslint/semi': ['error', 'always'],
+    'quotes': ['error', 'single'],
+    'eol-last': ['error', 'always'],
+    'no-trailing-spaces': 'error',
     'space-before-function-paren': 'off',
     'no-useless-constructor': 'off',
     'max-len': ['error', { code: 120 }],
@@ -26,9 +26,15 @@ module.exports = {
       'error', 
       { allowNumber: true, allowBoolean: true, allowAny: true, allowNullish: true },
     ],
-    "comma-dangle": "off",
-    "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
-    "no-return-await": "off",
-    "@typescript-eslint/return-await": ["error", "in-try-catch"]
+    'comma-dangle': 'off',
+    '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
+    'no-return-await': 'off',
+    '@typescript-eslint/return-await': ['error', 'in-try-catch'],
+    '@typescript-eslint/no-misused-promises': [
+      'error',
+      {
+        'checksVoidReturn': false
+      }
+    ]
   },
 };

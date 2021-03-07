@@ -22,7 +22,11 @@ export abstract class PgRepository<T> {
   abstract getOne(by?: { [key: string]: any }, tx?: Transaction | null): Promise<T | null>;
 
   async insertOne(entity: T, tx: Transaction | null = null): Promise<void> {
-    const entitiesSerialized = this.serialize([entity]);
+    return this.insertAll([entity], tx);
+  }
+
+  async insertAll(entities: T[], tx: Transaction | null = null): Promise<void> {
+    const entitiesSerialized = this.serialize(entities);
     const query = this.pool.insert(entitiesSerialized).into(this.tableName);
     await this.execQuery(query, tx);
   }

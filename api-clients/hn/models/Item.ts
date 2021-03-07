@@ -14,4 +14,5 @@ export interface Item {
 
 export const enum ItemType {
   STORY = 'story',
+  COMMENT = 'comment',
 }

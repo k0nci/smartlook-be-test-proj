@@ -8,6 +8,10 @@ type GetOneByQuery = {
   author?: string;
 };
 
+type DeleteAllByQuery = {
+  parent?: number;
+};
+
 export class CommentsRepository extends PgRepository<Comment> {
   private static TABLE_NAME = 'comments';
   constructor(pool: PgPool) {
@@ -32,5 +36,13 @@ export class CommentsRepository extends PgRepository<Comment> {
     const resultSet = await this.execQuery(query, tx);
     const comments = deserializeComments(resultSet);
     return comments[0] || null;
+  }
+
+  async deleteAll(by?: DeleteAllByQuery, tx: Transaction | null = null): Promise<void> {
+    let query = this.pool(this.tableName).delete();
+    if (by?.parent !== undefined) {
+      query = query.where('parent', '=', by.parent);
+    }
+    await this.execQuery(query, tx);
   }
 }

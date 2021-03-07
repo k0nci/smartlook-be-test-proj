@@ -26,7 +26,7 @@ export class HNApiClient {
 
   async getItemById(id: number): Promise<Item | null> {
     const path = `/item/${id}.json`;
-    return await this.get<Item>(path);
+    return this.get<Item>(path);
   }
 
   private async get<T>(path: string, config?: ReqConfig): Promise<T | null> {
