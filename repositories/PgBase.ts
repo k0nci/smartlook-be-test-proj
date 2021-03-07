@@ -8,7 +8,7 @@ export abstract class PgRepository<T> {
     protected pool: PgPool,
     protected tableName: string,
     protected serialize: (entity: T[]) => any[],
-    protected deserialize: (row: ResultSet) => T[]
+    protected deserialize: (row: ResultSet) => T[],
   ) {}
 
   abstract getOne(by?: { [key: string]: any }): Promise<T | null>;

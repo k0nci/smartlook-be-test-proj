@@ -3,8 +3,9 @@ import bcrypt from 'bcrypt';
 import { UsersRepository } from '@smartlook/repositories/Users';
 import { User } from '@smartlook/models/User';
 
-export const enum UsersServiceErr {
+export enum UsersServiceErr {
   USER_EXISTS = 'USER_EXISTS',
+  USER_UNAUTHORIZED = 'USER_UNAUTHORIZED',
 }
 
 type RegisterUserData = {
@@ -31,8 +32,25 @@ export class UsersService {
     return user;
   }
 
+  async getUserByEmailAndPassword({ email, password }: { email: string, password: string }): Promise<User> {
+    const user = await this.usersRepo.getOne({ email });
+    if (!user) {
+      throw new Error(UsersServiceErr.USER_UNAUTHORIZED);
+    }
+
+    const isPwdValid = await this.checkPassword(user.password, password);
+    if (!isPwdValid) {
+      throw new Error(UsersServiceErr.USER_UNAUTHORIZED);
+    }
+    return user;
+  }
+
   private async createPasswordHash(password: string): Promise<string> {
     // TODO: Configure rounds from config
     return await bcrypt.hash(password, 14);
+  }
+
+  private async checkPassword(userPwd: string, providedPwd: string): Promise<boolean> {
+    return await bcrypt.compare(providedPwd, userPwd);
   }
 }

@@ -11,7 +11,8 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    semi: 'off',
+    "semi": "off",
+    "@typescript-eslint/semi": ["error", "always"],
     'space-before-function-paren': 'off',
     'no-useless-constructor': 'off',
     'max-len': ['error', { code: 120 }],
@@ -22,5 +23,7 @@ module.exports = {
       'error', 
       { allowNumber: true, allowBoolean: true, allowAny: true, allowNullish: true },
     ],
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
   },
 };

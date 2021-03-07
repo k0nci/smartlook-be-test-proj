@@ -1,16 +1,16 @@
-export type CreateCollectionBody = {
+export interface CreateCollectionBody {
   name: string;
   ownerId: string; // TODO: Remove and use id of authentificated user
-};
+}
 
-export type GetCollectionByIdParams = {
+export interface GetCollectionByIdParams {
   collectionId: string;
-};
+}
 
-export type UpdateCollectionWithIdParams = {
+export interface UpdateCollectionWithIdParams {
   collectionId: string;
-};
+}
 
-export type UpdateCollectionWithIdBody = {
+export interface UpdateCollectionWithIdBody {
   name: string;
-};
+}

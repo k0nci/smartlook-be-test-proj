@@ -45,7 +45,7 @@ router.post<any, Collection, CreateCollectionBody>(
       }
       return next(httpErr);
     }
-  }
+  },
 );
 
 router.get<GetCollectionByIdParams, Collection>(
@@ -74,7 +74,7 @@ router.get<GetCollectionByIdParams, Collection>(
       }
       return next(httpErr);
     }
-  }
+  },
 );
 
 router.patch<UpdateCollectionWithIdParams, any, UpdateCollectionWithIdBody>(
@@ -103,5 +103,5 @@ router.patch<UpdateCollectionWithIdParams, any, UpdateCollectionWithIdBody>(
       }
       return next(httpErr);
     }
-  }
+  },
 );

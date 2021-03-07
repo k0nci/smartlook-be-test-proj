@@ -12,9 +12,11 @@ import { UsersService } from './services/Users';
 import { CollectionsService } from './services/Collections';
 
 // Routes
-import { router as livez } from './routes/livez';
-import { router as users } from './routes/users';
-import { router as collections } from './routes/collections';
+import { router as livezRouter } from './routes/livez';
+import { router as usersRouter } from './routes/users';
+import { router as collectionsRouter } from './routes/collections';
+import { router as tokensRouter } from './routes/tokens';
+import { TokensService } from './services/Tokens';
 
 const NODE_ENV = process.env.NODE_ENV;
 
@@ -36,10 +38,15 @@ const collectionsRepo = new CollectionsRepository(dbPool);
 
 const usersService = new UsersService(usersRepo);
 const collectionsService = new CollectionsService(collectionsRepo);
+const tokensService = new TokensService(
+  usersService, 
+  { ACCESS_TOKEN_SECRET: 'oZLmwGq6mj&PG47s', ACCESS_TOKEN_EXPIRES_IN_SECONDS: 1440 },
+);
 
 app.services = {
   users: usersService,
   collections: collectionsService,
+  tokens: tokensService,
 };
 
 app.use(middlewares.reqLogger());
@@ -47,9 +54,10 @@ app.use(middlewares.reqLogger());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/users', users);
-app.use('/livez', livez);
-app.use('/collections', collections);
+app.use('/users', usersRouter);
+app.use('/livez', livezRouter);
+app.use('/collections', collectionsRouter);
+app.use('/tokens', tokensRouter);
 
 app.use(middlewares.notFound());
 

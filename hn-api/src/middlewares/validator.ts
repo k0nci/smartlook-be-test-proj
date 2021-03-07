@@ -22,7 +22,7 @@ export type IRequestSchema = {
   headers?: Schema;
 };
 
-export function middleware(schema: IRequestSchema): RequestHandler {
+export function middleware(schema: IRequestSchema): RequestHandler<any, any, any, any> {
   const reqSchema = {
     ...defaultReqSchema,
     properties: {
