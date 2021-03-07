@@ -12,6 +12,10 @@ type GetAllByQuery = {
   collectionId?: string;
 };
 
+type DeleteOneByQuery = {
+  id?: number;
+};
+
 export class StoriesRepository extends PgRepository<Story> {
   private static TABLE_NAME = 'stories';
 
@@ -54,12 +58,24 @@ export class StoriesRepository extends PgRepository<Story> {
     return this.deserialize(resultSet);
   }
 
+  async upsertOne(story: Story, tx: Transaction | null = null): Promise<void> {
+    return this.upsertAll([story], tx);
+  }
+
   async upsertAll(stories: Story[], tx: Transaction | null = null): Promise<void> {
     if (stories.length === 0) {
       return;
     }
     const storiesSerialized = this.serialize(stories);
     const query = this.pool(this.tableName).insert(storiesSerialized).onConflict('id').merge();
+    await this.execQuery(query, tx);
+  }
+
+  async deleteAll(by?: DeleteOneByQuery, tx: Transaction | null = null): Promise<void> {
+    let query = this.pool(this.tableName).delete();
+    if (by?.id !== undefined) {
+      query = query.where('id', '=', by.id);
+    }
     await this.execQuery(query, tx);
   }
 }

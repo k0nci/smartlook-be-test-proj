@@ -85,10 +85,10 @@ export class CollectionsService {
     const errors: Array<{ storyId: number; code: string }> = [];
     const storiesFound: Story[] = [];
     for (const story of stories) {
-      if (!story.data) {
+      if (story.code !== 'ITEM_FOUND' ) {
         errors.push({
           storyId: story.id,
-          code: story.code ?? 'ITEM_ERROR',
+          code: story.code,
         });
       } else {
         storiesFound.push(story.data);

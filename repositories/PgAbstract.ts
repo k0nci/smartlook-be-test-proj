@@ -26,6 +26,9 @@ export abstract class PgRepository<T> {
   }
 
   async insertAll(entities: T[], tx: Transaction | null = null): Promise<void> {
+    if (entities.length === 0) {
+      return;
+    }
     const entitiesSerialized = this.serialize(entities);
     const query = this.pool.insert(entitiesSerialized).into(this.tableName);
     await this.execQuery(query, tx);

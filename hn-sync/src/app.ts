@@ -5,6 +5,7 @@ import { CronJob } from 'cron';
 import knex from 'knex';
 import { HNApiClient } from '../../api-clients/hn';
 import { SyncCommentsJob } from './jobs/SyncComments';
+import { SyncStoriesJob } from './jobs/SyncStories';
 import { getLogger } from './utils/logger';
 
 const LOGGER = getLogger();
@@ -32,6 +33,7 @@ const commentsRepo = new CommentsRepository(dbPool);
 
 const JOBS_TO_RUN = [
   new SyncCommentsJob(hnApiClient, storiesRepo, commentsRepo),
+  new SyncStoriesJob(hnApiClient, storiesRepo),
 ];
 
 const runningJobs = [];
