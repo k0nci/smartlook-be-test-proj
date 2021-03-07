@@ -1,9 +1,14 @@
+import path from 'path';
 import { StoriesRepository } from '@smartlook/repositories/stories';
 import { CommentsRepository } from '@smartlook/repositories/Comments';
 import { HNApiClient } from '@smartlook/api-clients/hn';
 import { Story } from '@smartlook/models/Story';
-import { Comment } from '../../../repositories/node_modules/@smartlook/models/Comment';
+import { Comment } from '@smartlook/models/Comment';
 import { ItemType } from '@smartlook/api-clients/hn/models/Item';
+import { getLogger } from '../utils/logger';
+
+const FILE_NAME = path.parse(path.basename(__filename)).name;
+const LOGGER = getLogger(FILE_NAME);
 
 export class SyncCommentsJob {
   readonly JOB_NAME = 'sync-comments';
@@ -28,10 +33,10 @@ export class SyncCommentsJob {
         succSyncedStories++;
         succfullySyncedComments += syncRes.value;
       } else {
-        console.log(syncRes.reason);
+        LOGGER.error(syncRes.reason);
       }
     }
-    console.log(`Successfully synced ${succfullySyncedComments} comments of ${succSyncedStories} stories`);
+    LOGGER.info(`Successfully synced ${succfullySyncedComments} comments of ${succSyncedStories} stories`);
   }
 
   async syncStoryComments(story: Story): Promise<number> {

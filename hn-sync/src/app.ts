@@ -5,6 +5,9 @@ import { CronJob } from 'cron';
 import knex from 'knex';
 import { HNApiClient } from '../../api-clients/hn';
 import { SyncCommentsJob } from './jobs/SyncComments';
+import { getLogger } from './utils/logger';
+
+const LOGGER = getLogger();
 
 const HN_API_URL = process.env.HN_API_URL ?? 'https://hacker-news.firebaseio.com/v0/';
 
@@ -31,14 +34,19 @@ const JOBS_TO_RUN = [
   new SyncCommentsJob(hnApiClient, storiesRepo, commentsRepo),
 ];
 
+const runningJobs = [];
 for (const job of JOBS_TO_RUN) {
   if (!job.JOB_ENABLED) {
     continue;
   }
   const cronJob = new CronJob(job.JOB_CRON, async () => {
-    console.log(`Job ${job.JOB_NAME} started`);
+    LOGGER.info(`Job ${job.JOB_NAME} started`);
     await job.run();
-    console.log(`Job ${job.JOB_NAME} finished`);
+    LOGGER.info(`Job ${job.JOB_NAME} finished`);
   });
   cronJob.start();
+
+  runningJobs.push(cronJob);
 }
+
+LOGGER.info(`Started ${runningJobs.length}/${JOBS_TO_RUN.length}`);
