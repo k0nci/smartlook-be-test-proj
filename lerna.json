@@ -1,9 +1,10 @@
 {
   "packages": [
-    "models",
-    "repositories",
+    "api-clients",
+    "collections-api",
     "hn-sync",
-    "collections-api"
+    "models",
+    "repositories"
   ],
   "version": "0.0.0"
 }
