@@ -2,23 +2,23 @@
 import { Collection } from '@smartlook/models/Collection';
 import { CollectionWithStories } from '@smartlook/models/CollectionWithStories';
 import { Router } from 'express';
-import middlewares from '../middlewares';
-import { CollectionsServiceErr } from '../services/Collections';
-import { getLogger } from '../utils';
-import { ForbiddenError } from '../utils/errors/ForbiddenError';
-import { HttpError } from '../utils/errors/HttpError';
-import { InternalServerError } from '../utils/errors/InternalServerError';
+import middlewares from '../../middlewares';
+import { CollectionsServiceErr } from '../../services/Collections';
+import { getLogger } from '../../utils';
+import { ForbiddenError } from '../../utils/errors/ForbiddenError';
+import { HttpError } from '../../utils/errors/HttpError';
+import { InternalServerError } from '../../utils/errors/InternalServerError';
 import {
   createCollectionSchema,
   getCollectionByIdSchema,
   updateCollectionWithIdSchema,
-} from '../validation/schemas/collections';
+} from '../../validation/schemas/collections';
 import {
   CreateCollectionBody,
   GetCollectionByIdParams,
   UpdateCollectionWithIdBody,
   UpdateCollectionWithIdParams,
-} from '../validation/types/collections';
+} from '../../validation/types/collections';
 
 const ACCESS_TOKEN_SECRET = 'oZLmwGq6mj&PG47s';
 

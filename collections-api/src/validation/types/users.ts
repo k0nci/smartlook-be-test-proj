@@ -1,4 +1,4 @@
-export type RegisterUserBody = {
+export interface RegisterUserBody {
   email: string;
   password: string;
-};
+}
