@@ -4,6 +4,10 @@ import { UsersService } from '../../services/Users';
 
 declare global {
   namespace Express {
+    interface User {
+      userId: string;
+      userEmail: string;
+    }
     interface Application {
       services: {
         users: UsersService;

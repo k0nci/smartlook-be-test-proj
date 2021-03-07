@@ -43,8 +43,7 @@ const collectionsService = new CollectionsService(
   collectionsRepo,
   storiesRepo,
 );
-const tokensService = new TokensService(
-  usersService, 
+const tokensService = new TokensService( 
   { ACCESS_TOKEN_SECRET: 'oZLmwGq6mj&PG47s', ACCESS_TOKEN_EXPIRES_IN_SECONDS: 259200 },
 );
 

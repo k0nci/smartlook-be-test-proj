@@ -3,9 +3,8 @@ export const createCollectionSchema = {
     type: 'object',
     properties: {
       name: { type: 'string', minLength: 1 },
-      ownerId: { type: 'string' },
     },
-    required: ['name', 'ownerId'],
+    required: ['name'],
     additionalProperties: false,
   },
 };

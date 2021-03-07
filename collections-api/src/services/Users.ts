@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { UsersRepository } from '@smartlook/repositories/Users';
 import { User } from '@smartlook/models/User';
 
-export enum UsersServiceErr {
+export const enum UsersServiceErr {
   USER_EXISTS = 'USER_EXISTS',
   USER_UNAUTHORIZED = 'USER_UNAUTHORIZED',
 }

@@ -1,28 +1,15 @@
+import { User } from '@smartlook/models/User';
 import jwt from 'jsonwebtoken';
-import { UsersService, UsersServiceErr } from './Users';
-
-enum LocalErr {
-
-}
-
-export const TokensServiceErr = { ...UsersServiceErr, ...LocalErr };
 
 type Config = {
   ACCESS_TOKEN_SECRET: string;
   ACCESS_TOKEN_EXPIRES_IN_SECONDS: number;
 };
 
-type CreateTokensData = {
-  email: string;
-  password: string;
-};
-
 export class TokensService {
-  constructor(private usersService: UsersService, private config: Config) {}
+  constructor(private config: Config) {}
 
-  async createTokens(data: CreateTokensData): Promise<{ userId: string, accessToken: string }> {
-    const user = await this.usersService.getUserByEmailAndPassword(data);
-
+  async createTokens(user: User): Promise<{ userId: string, accessToken: string }> {
     const accessToken = this.createJwtToken(
       this.config.ACCESS_TOKEN_SECRET,
       {

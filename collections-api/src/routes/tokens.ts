@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import middlewares from '../middlewares';
-import { TokensServiceErr } from '../services/Tokens';
+import { UsersServiceErr } from '../services/Users';
 import { getLogger } from '../utils';
 import { HttpError } from '../utils/errors/HttpError';
 import { InternalServerError } from '../utils/errors/InternalServerError';
@@ -18,12 +18,13 @@ router.post<any, { userId: string; accessToken: string }, CreateTokensBody>(
     const app = req.app;
 
     try {
-      const response = await app.services.tokens.createTokens(req.body);
+      const user = await app.services.users.getUserByEmailAndPassword(req.body);
+      const response = await app.services.tokens.createTokens(user);
       return res.status(200).json(response);
     } catch (err) {
       let httpErr: HttpError;
       switch (err.message) {
-        case TokensServiceErr.USER_UNAUTHORIZED: {
+        case UsersServiceErr.USER_UNAUTHORIZED: {
           httpErr = new HttpError(401, 'UNAUTHORIZED');
           break;
         }

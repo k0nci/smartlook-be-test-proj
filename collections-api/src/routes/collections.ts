@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Collection } from '@smartlook/models/Collection';
 import { CollectionWithStories } from '@smartlook/models/CollectionWithStories';
 import { Router } from 'express';
@@ -31,8 +32,10 @@ router.post<any, Collection, CreateCollectionBody>(
   async (req, res, next) => {
     const app = req.app;
 
+    const agent = req.user!;
+
     try {
-      const collection = await app.services.collections.createCollection(req.body);
+      const collection = await app.services.collections.createCollection(agent.userId, req.body);
       return res.status(200).json(collection);
     } catch (err) {
       let httpErr: HttpError;

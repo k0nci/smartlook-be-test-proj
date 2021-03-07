@@ -11,7 +11,6 @@ export const enum CollectionsServiceErr {
 
 type CreateCollectionData = {
   name: string;
-  ownerId: string;
 };
 
 type UpdateCollectionData = {
@@ -24,10 +23,10 @@ export class CollectionsService {
     private storiesRepo: StoriesRepository,
   ) {}
 
-  async createCollection(data: CreateCollectionData): Promise<Collection> {
+  async createCollection(ownerId: string, data: CreateCollectionData): Promise<Collection> {
     const collectionExists = await this.collectionsRepo.getOne({
       name: data.name,
-      ownerId: data.ownerId,
+      ownerId: ownerId,
     });
     if (collectionExists) {
       throw new Error(CollectionsServiceErr.COLLECTION_EXISTS);
@@ -36,7 +35,7 @@ export class CollectionsService {
     const collection: Collection = {
       id: uuidv4(),
       name: data.name,
-      ownerId: data.ownerId,
+      ownerId: ownerId,
     };
     await this.collectionsRepo.insertOne(collection);
     return collection;
