@@ -40,6 +40,10 @@ export class CollectionsRepository extends PgRepository<Collection> {
   }
 
   async upsertStoriesToCollection(collectionId: string, stories: Story[]): Promise<void> {
+    if (stories.length === 0) {
+      return;
+    }
+
     const collectionStories: Array<{ collection_id: string; story_id: number; }> = 
       stories.map((story) => ({
         collection_id: collectionId,

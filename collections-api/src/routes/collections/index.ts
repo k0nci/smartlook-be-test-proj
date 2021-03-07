@@ -19,12 +19,15 @@ import {
   UpdateCollectionWithIdBody,
   UpdateCollectionWithIdParams,
 } from '../../validation/types/collections';
+import { router as storiesRouter } from './stories';
 
 const ACCESS_TOKEN_SECRET = 'oZLmwGq6mj&PG47s';
 
 const LOGGER = getLogger();
 
 export const router = Router();
+
+router.use('/:collectionId/stories', storiesRouter);
 
 router.post<any, Collection, CreateCollectionBody>(
   '/',

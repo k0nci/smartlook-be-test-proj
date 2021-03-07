@@ -15,14 +15,14 @@ export class StoriesService {
         code: 'ITEM_NOT_FOUND',
       };
     }
-    if (item.type === ItemType.STORY) {
+    if (item.type !== ItemType.STORY) {
       return {
         id: id,
         value: null,
         code: 'ITEM_NOT_TYPE_STORY',
       };
     }
-    if (item.deleted !== true) {
+    if (item.deleted === true) {
       return {
         id: id,
         value: null,

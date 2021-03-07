@@ -53,6 +53,10 @@ export class StoriesRepository extends PgRepository<Story> {
   }
 
   async upsertAll(stories: Story[]): Promise<void> {
-    await this.pool(this.tableName).insert(stories).onConflict('id').merge();
+    if (stories.length === 0) {
+      return;
+    }
+    const storiesSerialized = this.serialize(stories);
+    await this.pool(this.tableName).insert(storiesSerialized).onConflict('id').merge();
   }
 }
