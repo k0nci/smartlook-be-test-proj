@@ -10,8 +10,8 @@ const LOGGER = getLogger(FILE_NAME);
 
 export class SyncStoriesJob {
   readonly JOB_NAME = 'sync-stories';
-  readonly JOB_ENABLED = process.env.SYNC_COMMENTS_ENABLED ?? true;
-  readonly JOB_CRON = process.env.SYNC_COMMENTS_CRON ?? '* * * * *';
+  readonly JOB_ENABLED = process.env.SYNC_STORIES_ENABLED ?? true;
+  readonly JOB_CRON = process.env.SYNC_STORIES_CRON ?? '* * * * *';
 
   constructor(private hnApiClient: HNApiClient, private storiesRepo: StoriesRepository) {}
 

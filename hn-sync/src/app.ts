@@ -11,25 +11,33 @@ import { getLogger } from './utils/logger';
 const LOGGER = getLogger();
 
 const HN_API_URL = process.env.HN_API_URL ?? 'https://hacker-news.firebaseio.com/v0/';
+const POSTGRES_HOST = process.env.POSTGRES_HOST ?? '127.0.0.1';
+const POSTGRES_PORT = process.env.POSTGRES_PORT ?? '5432';
+const POSTGRES_USER = process.env.POSTGRES_USER ?? 'hacker_news_stories';
+const POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD ?? 'hacker_news_stories';
+const POSTGRES_DB = process.env.POSTGRES_DB ?? 'hacker_news_stories';
 
-const hnApiClient = new HNApiClient(axios.create({
-  baseURL: HN_API_URL,
-  timeout: 10000,
-}));
+const hnApiClient = new HNApiClient(
+  axios.create({
+    baseURL: HN_API_URL,
+    timeout: 10000,
+  }),
+);
 
-const dbPool = knex({
+const pgPool = knex({
   client: 'pg',
   connection: {
-    host: '127.0.0.1',
-    port: 5432,
-    user: 'hacker_news_stories',
-    password: 'hacker_news_stories',
-    database: 'hacker_news_stories',
+    host: POSTGRES_HOST,
+    port: JSON.parse(POSTGRES_PORT),
+    user: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+    database: POSTGRES_DB,
   },
+  pool: { min: 1, max: 20 },
 });
 
-const storiesRepo = new StoriesRepository(dbPool);
-const commentsRepo = new CommentsRepository(dbPool);
+const storiesRepo = new StoriesRepository(pgPool);
+const commentsRepo = new CommentsRepository(pgPool);
 
 const JOBS_TO_RUN = [
   new SyncCommentsJob(hnApiClient, storiesRepo, commentsRepo),

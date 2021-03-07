@@ -8,13 +8,17 @@ export const enum UsersServiceErr {
   USER_UNAUTHORIZED = 'USER_UNAUTHORIZED',
 }
 
+type Config = {
+  BCRYPT_SALT_ROUNDS: number;
+};
+
 type RegisterUserData = {
   email: string;
   password: string;
 };
 
 export class UsersService {
-  constructor(private usersRepo: UsersRepository) {}
+  constructor(private usersRepo: UsersRepository, private config: Config) {}
 
   async registerUser(data: RegisterUserData): Promise<User> {
     const userExists = await this.usersRepo.getOne({ email: data.email });

@@ -11,7 +11,7 @@ import {
   InsertStoriesToCollectionParams,
 } from '../../validation/types/collections/stories';
 
-const ACCESS_TOKEN_SECRET = 'oZLmwGq6mj&PG47s';
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET ?? 'oZLmwGq6mj&PG47s';
 
 export const router = Router({ mergeParams: true });
 
