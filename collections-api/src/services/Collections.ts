@@ -5,6 +5,7 @@ import { CollectionsRepository } from '@smartlook/repositories/Collections';
 import { StoriesRepository } from '@smartlook/repositories/Stories';
 
 export const enum CollectionsServiceErr {
+  FORBIDDEN = 'FORBIDDEN',
   COLLECTION_EXISTS = 'COLLECTION_EXISTS',
   COLLECTION_NOT_FOUND = 'COLLECTION_NOT_FOUND',
 }
@@ -18,10 +19,7 @@ type UpdateCollectionData = {
 };
 
 export class CollectionsService {
-  constructor(
-    private collectionsRepo: CollectionsRepository,
-    private storiesRepo: StoriesRepository,
-  ) {}
+  constructor(private collectionsRepo: CollectionsRepository, private storiesRepo: StoriesRepository) {}
 
   async createCollection(ownerId: string, data: CreateCollectionData): Promise<Collection> {
     const collectionExists = await this.collectionsRepo.getOne({
@@ -41,12 +39,15 @@ export class CollectionsService {
     return collection;
   }
 
-  async getCollectionByIdWithStories(id: string): Promise<CollectionWithStories> {
+  async getCollectionByIdWithStories(agentId: string, id: string): Promise<CollectionWithStories> {
     const collection = await this.collectionsRepo.getOne({ id });
     if (!collection) {
       throw new Error(CollectionsServiceErr.COLLECTION_NOT_FOUND);
     }
-    
+    if (collection.ownerId !== agentId) {
+      throw new Error(CollectionsServiceErr.FORBIDDEN);
+    }
+
     const collectionStories = await this.storiesRepo.getAll({ collectionId: id });
     return {
       ...collection,
@@ -54,10 +55,13 @@ export class CollectionsService {
     };
   }
 
-  async updateCollectionWithId(id: string, data: UpdateCollectionData): Promise<Collection> {
-    const collection = await this.collectionsRepo.getOne({ id });
+  async updateCollectionWithId(agentId: string, collectionId: string, data: UpdateCollectionData): Promise<Collection> {
+    const collection = await this.collectionsRepo.getOne({ id: collectionId });
     if (!collection) {
       throw new Error(CollectionsServiceErr.COLLECTION_NOT_FOUND);
+    }
+    if (collection.ownerId !== agentId) {
+      throw new Error(CollectionsServiceErr.FORBIDDEN);
     }
 
     collection.name = data.name;

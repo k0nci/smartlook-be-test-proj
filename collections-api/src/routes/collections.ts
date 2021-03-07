@@ -5,6 +5,7 @@ import { Router } from 'express';
 import middlewares from '../middlewares';
 import { CollectionsServiceErr } from '../services/Collections';
 import { getLogger } from '../utils';
+import { ForbiddenError } from '../utils/errors/ForbiddenError';
 import { HttpError } from '../utils/errors/HttpError';
 import { InternalServerError } from '../utils/errors/InternalServerError';
 import {
@@ -62,16 +63,21 @@ router.get<GetCollectionByIdParams, CollectionWithStories>(
   async (req, res, next) => {
     const app = req.app;
 
+    const agent = req.user!;
     const { collectionId } = req.params;
 
     try {
-      const collection = await app.services.collections.getCollectionByIdWithStories(collectionId);
+      const collection = await app.services.collections.getCollectionByIdWithStories(agent.userId, collectionId);
       return res.status(200).json(collection);
     } catch (err) {
       let httpErr: HttpError;
       switch (err.message) {
         case CollectionsServiceErr.COLLECTION_NOT_FOUND: {
           httpErr = new HttpError(404, CollectionsServiceErr.COLLECTION_NOT_FOUND);
+          break;
+        }
+        case CollectionsServiceErr.FORBIDDEN: {
+          httpErr = new ForbiddenError();
           break;
         }
         default: {
@@ -92,16 +98,21 @@ router.patch<UpdateCollectionWithIdParams, any, UpdateCollectionWithIdBody>(
   async (req, res, next) => {
     const app = req.app;
 
+    const agent = req.user!;
     const { collectionId } = req.params;
 
     try {
-      await app.services.collections.updateCollectionWithId(collectionId, req.body);
+      await app.services.collections.updateCollectionWithId(agent.userId, collectionId, req.body);
       return res.status(204).end();
     } catch (err) {
       let httpErr: HttpError;
       switch (err.message) {
         case CollectionsServiceErr.COLLECTION_NOT_FOUND: {
           httpErr = new HttpError(404, CollectionsServiceErr.COLLECTION_NOT_FOUND);
+          break;
+        }
+        case CollectionsServiceErr.FORBIDDEN: {
+          httpErr = new ForbiddenError();
           break;
         }
         default: {
