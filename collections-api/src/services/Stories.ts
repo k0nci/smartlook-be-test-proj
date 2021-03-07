@@ -45,4 +45,8 @@ export class StoriesService {
   async upsertStories(stories: Story[]): Promise<void> {
     return this.storiesRepo.upsertAll(stories);
   }
+
+  async getStoriesByCollectionId(collectionId: string): Promise<Story[]> {
+    return this.storiesRepo.getAll({ collectionId });
+  }
 }

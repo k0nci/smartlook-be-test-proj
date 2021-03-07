@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Collection } from '@smartlook/models/Collection';
 import { CollectionWithStories } from '@smartlook/models/CollectionWithStories';
 import { CollectionsRepository } from '@smartlook/repositories/Collections';
-import { StoriesRepository } from '@smartlook/repositories/Stories';
 import { StoriesService } from './Stories';
 import { Story } from '@smartlook/models/Story';
 
@@ -24,7 +23,6 @@ export class CollectionsService {
   constructor(
     private collectionsRepo: CollectionsRepository,
     private storiesService: StoriesService,
-    private storiesRepo: StoriesRepository,
   ) {}
 
   async createCollection(ownerId: string, data: CreateCollectionData): Promise<Collection> {
@@ -45,7 +43,7 @@ export class CollectionsService {
     return collection;
   }
 
-  async getCollectionById(agentId: string, collectionId: string): Promise<Collection> {
+  async getCollectionByIdAsOwner(agentId: string, collectionId: string): Promise<Collection> {
     const collection = await this.collectionsRepo.getOne({ id: collectionId });
     if (!collection) {
       throw new Error(CollectionsServiceErr.COLLECTION_NOT_FOUND);
@@ -57,9 +55,9 @@ export class CollectionsService {
   }
 
   async getCollectionByIdWithStories(agentId: string, collectionId: string): Promise<CollectionWithStories> {
-    const collection = await this.getCollectionById(agentId, collectionId);
+    const collection = await this.getCollectionByIdAsOwner(agentId, collectionId);
 
-    const collectionStories = await this.storiesRepo.getAll({ collectionId });
+    const collectionStories = await this.storiesService.getStoriesByCollectionId(collectionId);
     return {
       ...collection,
       stories: collectionStories,
@@ -67,7 +65,7 @@ export class CollectionsService {
   }
 
   async updateCollectionWithId(agentId: string, collectionId: string, data: UpdateCollectionData): Promise<Collection> {
-    const collection = await this.getCollectionById(agentId, collectionId);
+    const collection = await this.getCollectionByIdAsOwner(agentId, collectionId);
 
     collection.name = data.name;
     await this.collectionsRepo.updateOne(collection);
@@ -79,7 +77,7 @@ export class CollectionsService {
     collectionId: string,
     storyIds: number[],
   ): Promise<{ errors: Array<{ storyId: number; code: string }> }> {
-    const collection = await this.getCollectionById(agentId, collectionId);
+    const collection = await this.getCollectionByIdAsOwner(agentId, collectionId);
 
     const stories = await Promise.all(
       storyIds.map(async (storyId) => this.storiesService.fetchStoryById(storyId)),
@@ -99,5 +97,5 @@ export class CollectionsService {
     await this.storiesService.upsertStories(storiesFound);
     await this.collectionsRepo.upsertStoriesToCollection(collection.id, storiesFound);
     return { errors };
-  };
+  }
 }

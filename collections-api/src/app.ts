@@ -52,7 +52,6 @@ const storiesService = new StoriesService(hnApiClient, storiesRepo);
 const collectionsService = new CollectionsService(
   collectionsRepo,
   storiesService,
-  storiesRepo,
 );
 const tokensService = new TokensService( 
   { ACCESS_TOKEN_SECRET: 'oZLmwGq6mj&PG47s', ACCESS_TOKEN_EXPIRES_IN_SECONDS: 259200 },
