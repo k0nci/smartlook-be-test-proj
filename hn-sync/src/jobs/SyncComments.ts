@@ -6,9 +6,9 @@ import { Comment } from '../../../repositories/node_modules/@smartlook/models/Co
 import { ItemType } from '@smartlook/api-clients/hn/models/Item';
 
 export class SyncCommentsJob {
-  readonly JOB_NAME = 'sync-stories-and-comments';
-  readonly JOB_ENABLED = process.env.SYNC_STORIES_AND_COMMENTS_ENABLED ?? true;
-  readonly JOB_CRON = process.env.SYNC_STORIES_AND_COMMENTS_CRON ?? '* * * * *';
+  readonly JOB_NAME = 'sync-comments';
+  readonly JOB_ENABLED = process.env.SYNC_COMMENTS_ENABLED ?? true;
+  readonly JOB_CRON = process.env.SYNC_COMMENTS_CRON ?? '* * * * *';
 
   constructor(
     private hnApiClient: HNApiClient,
@@ -38,7 +38,21 @@ export class SyncCommentsJob {
     if (story.kids.length === 0) {
       return 0;
     }
+    const commentsFound = await this.fetchStoryCommets(story);
 
+    const tx = await this.commentsRepo.initTransaction();
+    try {
+      await this.commentsRepo.deleteAll({ parent: story.id }, tx);
+      await this.commentsRepo.insertAll(commentsFound, tx);
+      await tx.commit();
+    } catch (err) {
+      await tx.rollback();
+      throw err;
+    }
+    return commentsFound.length;
+  }
+
+  async fetchStoryCommets(story: Story): Promise<Comment[]> {
     const comments = await Promise.all(story.kids.map(async (commentId) => this.hnApiClient.getItemById(commentId)));
     const commentsFound: Comment[] = [];
     for (const comment of comments) {
@@ -53,15 +67,6 @@ export class SyncCommentsJob {
         });
       }
     }
-    const tx = await this.commentsRepo.initTransaction();
-    try {
-      await this.commentsRepo.deleteAll({ parent: story.id }, tx);
-      await this.commentsRepo.insertAll(commentsFound, tx);
-      await tx.commit();
-    } catch (err) {
-      await tx.rollback();
-      throw err;
-    }
-    return commentsFound.length;
+    return commentsFound;
   }
 }
