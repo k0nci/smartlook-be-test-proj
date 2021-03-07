@@ -13,7 +13,7 @@ type DeleteAllByQuery = {
 };
 
 export class CommentsRepository extends PgRepository<Comment> {
-  private static TABLE_NAME = 'comments';
+  static readonly TABLE_NAME = 'comments';
   constructor(pool: PgPool) {
     super(pool, CommentsRepository.TABLE_NAME, serializeComments, deserializeComments);
   }

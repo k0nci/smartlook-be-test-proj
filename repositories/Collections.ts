@@ -10,7 +10,7 @@ type GetOneByQuery = {
 };
 
 export class CollectionsRepository extends PgRepository<Collection> {
-  private static TABLE_NAME = 'collections';
+  static readonly TABLE_NAME = 'collections';
   constructor(pool: PgPool) {
     super(pool, CollectionsRepository.TABLE_NAME, serializeCollections, deserializeCollections);
   }

@@ -43,7 +43,7 @@ export class SyncCommentsJob {
     if (story.kids.length === 0) {
       return 0;
     }
-    const commentsFound = await this.fetchStoryCommets(story);
+    const commentsFound = await this.fetchStoryComments(story);
 
     const tx = await this.commentsRepo.initTransaction();
     try {
@@ -57,7 +57,7 @@ export class SyncCommentsJob {
     return commentsFound.length;
   }
 
-  async fetchStoryCommets(story: Story): Promise<Comment[]> {
+  async fetchStoryComments(story: Story): Promise<Comment[]> {
     const comments = await Promise.all(story.kids.map(async (commentId) => this.hnApiClient.getItemById(commentId)));
     const commentsFound: Comment[] = [];
     for (const comment of comments) {

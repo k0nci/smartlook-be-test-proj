@@ -1,4 +1,5 @@
 import { Story } from '@smartlook/models/Story';
+import { CollectionsRepository } from './Collections';
 import { deserializeStories, serializeStories } from './mappers/story';
 import { PgPool, PgRepository, Transaction } from './PgAbstract';
 
@@ -17,7 +18,7 @@ type DeleteOneByQuery = {
 };
 
 export class StoriesRepository extends PgRepository<Story> {
-  private static TABLE_NAME = 'stories';
+  static readonly TABLE_NAME = 'stories';
 
   constructor(pool: PgPool) {
     super(pool, StoriesRepository.TABLE_NAME, serializeStories, deserializeStories);
@@ -49,8 +50,12 @@ export class StoriesRepository extends PgRepository<Story> {
     if (by?.collectionId !== undefined) {
       query = query
         .join('collections_stories', 'collections_stories.story_id', `${this.tableName}.id`)
-        .join('collections', 'collections.id', 'collections_stories.collection_id')
-        .where('collections.id', '=', by.collectionId);
+        .join(
+          CollectionsRepository.TABLE_NAME,
+          `${CollectionsRepository.TABLE_NAME}.id`,
+          'collections_stories.collection_id',
+        )
+        .where(`${CollectionsRepository.TABLE_NAME}.id`, '=', by.collectionId);
     }
     query = query.select(`${this.tableName}.*`);
 
