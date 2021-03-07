@@ -42,7 +42,13 @@ export function middleware(env: NodeEnv): ErrorRequestHandler {
 
   return (err, req, res, next) => {
     // Check if instance of HttpError
-    const httpErr: HttpError = err.status ? err : new InternalServerError();
+    let httpErr: HttpError;
+
+    if (err.name === 'UnauthorizedError') {
+      httpErr = new HttpError(401, 'Unauthorized');
+    }
+
+    httpErr = err.status ? err : new InternalServerError();
     const body = buildResBody(httpErr);
 
     if (httpErr.status >= 500) {

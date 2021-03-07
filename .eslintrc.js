@@ -3,7 +3,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ['standard-with-typescript', 'prettier',],
+  extends: ['standard-with-typescript', 'prettier'],
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',
@@ -14,6 +14,7 @@ module.exports = {
     "semi": "off",
     "@typescript-eslint/semi": ["error", "always"],
     "quotes": ["error", "single"],
+    "eol-last": ["error", "always"],
     'space-before-function-paren': 'off',
     'no-useless-constructor': 'off',
     'max-len': ['error', { code: 120 }],

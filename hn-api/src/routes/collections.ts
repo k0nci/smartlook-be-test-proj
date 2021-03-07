@@ -18,12 +18,15 @@ import {
   UpdateCollectionWithIdParams,
 } from '../validation/types/collections';
 
+const ACCESS_TOKEN_SECRET = 'oZLmwGq6mj&PG47s';
+
 const LOGGER = getLogger();
 
 export const router = Router();
 
 router.post<any, Collection, CreateCollectionBody>(
   '/',
+  middlewares.authenticate(ACCESS_TOKEN_SECRET),
   middlewares.validate(createCollectionSchema),
   async (req, res, next) => {
     const app = req.app;
@@ -35,7 +38,7 @@ router.post<any, Collection, CreateCollectionBody>(
       let httpErr: HttpError;
       switch (err) {
         case CollectionsServiceErr.COLLECTION_EXISTS: {
-          httpErr = new HttpError(CollectionsServiceErr.COLLECTION_EXISTS, 409);
+          httpErr = new HttpError(409, CollectionsServiceErr.COLLECTION_EXISTS);
           break;
         }
         default: {
@@ -51,6 +54,7 @@ router.post<any, Collection, CreateCollectionBody>(
 
 router.get<GetCollectionByIdParams, CollectionWithStories>(
   '/:collectionId',
+  middlewares.authenticate(ACCESS_TOKEN_SECRET),
   middlewares.validate(getCollectionByIdSchema),
   async (req, res, next) => {
     const app = req.app;
@@ -64,7 +68,7 @@ router.get<GetCollectionByIdParams, CollectionWithStories>(
       let httpErr: HttpError;
       switch (err.message) {
         case CollectionsServiceErr.COLLECTION_NOT_FOUND: {
-          httpErr = new HttpError(CollectionsServiceErr.COLLECTION_NOT_FOUND, 404);
+          httpErr = new HttpError(404, CollectionsServiceErr.COLLECTION_NOT_FOUND);
           break;
         }
         default: {
@@ -80,6 +84,7 @@ router.get<GetCollectionByIdParams, CollectionWithStories>(
 
 router.patch<UpdateCollectionWithIdParams, any, UpdateCollectionWithIdBody>(
   '/:collectionId',
+  middlewares.authenticate(ACCESS_TOKEN_SECRET),
   middlewares.validate(updateCollectionWithIdSchema),
   async (req, res, next) => {
     const app = req.app;
@@ -93,7 +98,7 @@ router.patch<UpdateCollectionWithIdParams, any, UpdateCollectionWithIdBody>(
       let httpErr: HttpError;
       switch (err.message) {
         case CollectionsServiceErr.COLLECTION_NOT_FOUND: {
-          httpErr = new HttpError(CollectionsServiceErr.COLLECTION_NOT_FOUND, 404);
+          httpErr = new HttpError(404, CollectionsServiceErr.COLLECTION_NOT_FOUND);
           break;
         }
         default: {

@@ -45,7 +45,7 @@ const collectionsService = new CollectionsService(
 );
 const tokensService = new TokensService(
   usersService, 
-  { ACCESS_TOKEN_SECRET: 'oZLmwGq6mj&PG47s', ACCESS_TOKEN_EXPIRES_IN_SECONDS: 1440 },
+  { ACCESS_TOKEN_SECRET: 'oZLmwGq6mj&PG47s', ACCESS_TOKEN_EXPIRES_IN_SECONDS: 259200 },
 );
 
 app.services = {

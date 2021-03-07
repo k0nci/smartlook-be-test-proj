@@ -3,7 +3,7 @@ export class HttpError extends Error {
   readonly details: any;
   readonly stack: string = '';
 
-  constructor(message: string, status: number, details: any = undefined, error?: Error) {
+  constructor(status: number, message: string, details: any = undefined, error?: Error) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype);
 

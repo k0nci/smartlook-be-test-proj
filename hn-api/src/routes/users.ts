@@ -21,7 +21,7 @@ router.post<any, any, RegisterUserBody>('/', middlewares.validate(registerUserSc
     let httpError: HttpError;
     switch (err.message) {
       case UsersServiceErr.USER_EXISTS: {
-        httpError = new HttpError(UsersServiceErr.USER_EXISTS, 409);
+        httpError = new HttpError(409, UsersServiceErr.USER_EXISTS);
         break;
       }
       default: {

@@ -5,9 +5,9 @@ export class InternalServerError extends HttpError {
 
   constructor(message: string | Error = 'Internal server error') {
     if (message instanceof Error) {
-      super('Internal server error', InternalServerError.STATUS_CODE, message);
+      super(InternalServerError.STATUS_CODE, 'Internal server error', message);
     } else {
-      super(message, InternalServerError.STATUS_CODE);
+      super(InternalServerError.STATUS_CODE, message);
     }
     Object.setPrototypeOf(this, new.target.prototype);
   }

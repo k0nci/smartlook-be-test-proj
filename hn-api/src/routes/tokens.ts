@@ -24,7 +24,7 @@ router.post<any, { userId: string; accessToken: string }, CreateTokensBody>(
       let httpErr: HttpError;
       switch (err.message) {
         case TokensServiceErr.USER_UNAUTHORIZED: {
-          httpErr = new HttpError('UNAUTHORIZED', 401);
+          httpErr = new HttpError(401, 'UNAUTHORIZED');
           break;
         }
         default: {

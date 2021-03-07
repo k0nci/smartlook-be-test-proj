@@ -4,7 +4,7 @@ export class ValidationError extends HttpError {
   private static STATUS_CODE = 400;
 
   constructor(details?: any) {
-    super('Validation error', ValidationError.STATUS_CODE, details);
+    super(ValidationError.STATUS_CODE, 'Validation error', details);
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
