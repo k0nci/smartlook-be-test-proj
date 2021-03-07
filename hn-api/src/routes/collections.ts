@@ -1,4 +1,5 @@
 import { Collection } from '@smartlook/models/Collection';
+import { CollectionWithStories } from '@smartlook/models/CollectionWithStories';
 import { Router } from 'express';
 import middlewares from '../middlewares';
 import { CollectionsServiceErr } from '../services/Collections';
@@ -48,7 +49,7 @@ router.post<any, Collection, CreateCollectionBody>(
   },
 );
 
-router.get<GetCollectionByIdParams, Collection>(
+router.get<GetCollectionByIdParams, CollectionWithStories>(
   '/:collectionId',
   middlewares.validate(getCollectionByIdSchema),
   async (req, res, next) => {
@@ -57,7 +58,7 @@ router.get<GetCollectionByIdParams, Collection>(
     const { collectionId } = req.params;
 
     try {
-      const collection = await app.services.collections.getCollectionById(collectionId);
+      const collection = await app.services.collections.getCollectionByIdWithStories(collectionId);
       return res.status(200).json(collection);
     } catch (err) {
       let httpErr: HttpError;

@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Collection } from '@smartlook/models/Collection';
+import { CollectionWithStories } from '@smartlook/models/CollectionWithStories';
 import { CollectionsRepository } from '@smartlook/repositories/Collections';
+import { StoriesRepository } from '@smartlook/repositories/Stories';
 
 export const enum CollectionsServiceErr {
   COLLECTION_EXISTS = 'COLLECTION_EXISTS',
@@ -17,7 +19,10 @@ type UpdateCollectionData = {
 };
 
 export class CollectionsService {
-  constructor(private collectionsRepo: CollectionsRepository) {}
+  constructor(
+    private collectionsRepo: CollectionsRepository,
+    private storiesRepo: StoriesRepository,
+  ) {}
 
   async createCollection(data: CreateCollectionData): Promise<Collection> {
     const collectionExists = await this.collectionsRepo.getOne({
@@ -37,12 +42,17 @@ export class CollectionsService {
     return collection;
   }
 
-  async getCollectionById(id: string): Promise<Collection> {
+  async getCollectionByIdWithStories(id: string): Promise<CollectionWithStories> {
     const collection = await this.collectionsRepo.getOne({ id });
     if (!collection) {
       throw new Error(CollectionsServiceErr.COLLECTION_NOT_FOUND);
     }
-    return collection;
+    
+    const collectionStories = await this.storiesRepo.getAll({ collectionId: id });
+    return {
+      ...collection,
+      stories: collectionStories,
+    };
   }
 
   async updateCollectionWithId(id: string, data: UpdateCollectionData): Promise<Collection> {

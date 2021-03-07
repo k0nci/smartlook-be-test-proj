@@ -13,6 +13,7 @@ module.exports = {
   rules: {
     "semi": "off",
     "@typescript-eslint/semi": ["error", "always"],
+    "quotes": ["error", "single"],
     'space-before-function-paren': 'off',
     'no-useless-constructor': 'off',
     'max-len': ['error', { code: 120 }],
