@@ -3,7 +3,7 @@
     "models",
     "repositories",
     "hn-sync",
-    "hn-api"
+    "collections-api"
   ],
   "version": "0.0.0"
 }
