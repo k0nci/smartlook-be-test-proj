@@ -63,7 +63,7 @@ export class CollectionsRepository extends PgRepository<Collection> {
 
   async deleteOne(collection: Collection, tx: Transaction | null = null): Promise<void> {
     const isLocalTx = tx === null;
-    const txLocal = tx === null ? await this.initTransaction() : tx;
+    const txLocal = tx === null ? await this.beginTransaction() : tx;
 
     try {
       const collectionStroriesQuery = this.pool('collections_stories')

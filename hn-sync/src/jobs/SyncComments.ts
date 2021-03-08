@@ -45,7 +45,7 @@ export class SyncCommentsJob {
     }
     const commentsFound = await this.fetchStoryComments(story);
 
-    const tx = await this.commentsRepo.initTransaction();
+    const tx = await this.commentsRepo.beginTransaction();
     try {
       await this.commentsRepo.deleteAll({ parent: story.id }, tx);
       await this.commentsRepo.insertAll(commentsFound, tx);

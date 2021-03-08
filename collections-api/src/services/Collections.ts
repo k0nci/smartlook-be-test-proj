@@ -95,7 +95,7 @@ export class CollectionsService {
       }
     }
 
-    const tx = await this.collectionsRepo.initTransaction();
+    const tx = await this.collectionsRepo.beginTransaction();
     try {
       await this.storiesService.upsertStories(storiesFound, tx);
       await this.collectionsRepo.upsertStoriesToCollection(collection.id, storiesFound, tx);

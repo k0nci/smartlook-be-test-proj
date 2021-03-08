@@ -34,14 +34,14 @@ export abstract class PgRepository<T> {
     await this.execQuery(query, tx);
   }
 
-  async initTransaction(isolationLevel: IsolationLevel = IsolationLevel.SERIALIZABLE): Promise<Transaction> {
+  async beginTransaction(isolationLevel: IsolationLevel = IsolationLevel.SERIALIZABLE): Promise<Transaction> {
     return this.pool.transaction({ isolationLevel: isolationLevel });
   }
 
   protected async execQuery(query: Knex.QueryBuilder, tx: Transaction | null = null): Promise<any> {
     const isLocalTx = tx === null;
     // Cannot use isLocalTransaction varialbe due to typing
-    const txLocal = tx === null ? await this.initTransaction() : tx;
+    const txLocal = tx === null ? await this.beginTransaction() : tx;
     try {
       const resultSet = await query.transacting(txLocal);
       if (isLocalTx) {
