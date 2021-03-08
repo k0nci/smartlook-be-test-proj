@@ -36,8 +36,8 @@ export class CollectionsRepository extends PgRepository<Collection> {
   }
 
   async updateOne(collection: Collection, tx: Transaction | null = null): Promise<void> {
-    const collectionSerialized = this.serialize([collection]);
-    const query = this.pool(this.tableName).update(collectionSerialized);
+    const [collectionSerialized] = this.serialize([collection]);
+    const query = this.pool(this.tableName).update(collectionSerialized).where('id', '=', collection.id);
     await this.execQuery(query, tx);
   }
 

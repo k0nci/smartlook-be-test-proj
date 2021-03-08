@@ -8,7 +8,8 @@
 |____collections-api      -- Collections API service
 |____database             -- Database schema migrations
 |____hn-sync              -- HackerNews sync service 
-|____models               -- Model used by services
+|____models               -- Models used by services
+|____postman              -- Postman collections and environments
 |____repositories         -- Database access layer
 ```
 
@@ -18,7 +19,7 @@ Requirements:
 * **Docker** - v20.10.5
 * **Postman** - v8.0.6
 
-> :warning:: Commands should be executed from root package
+> :warning: Commands should be executed from root package
 ```
 # Setup database
 docker-compose up -d postgres
@@ -42,7 +43,7 @@ npm run start:ts
 ```
 
 ## Setup PostgreSQL
-> :warning:: Commands should be executed from root package
+> :warning: Commands should be executed from root package
 
 **Start database**
 ```

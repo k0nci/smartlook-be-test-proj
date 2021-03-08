@@ -42,7 +42,7 @@ router.post<any, Collection, CreateCollectionBody>(
       return res.status(200).json(collection);
     } catch (err) {
       let httpErr: HttpError;
-      switch (err) {
+      switch (err.message) {
         case CollectionsServiceErr.COLLECTION_EXISTS: {
           httpErr = new HttpError(409, CollectionsServiceErr.COLLECTION_EXISTS);
           break;
