@@ -1,6 +1,6 @@
 # smartlook-be-test-proj
 
-> **IMPORTANT NOTE:** Setup of production build + service dockerization is in TODO list
+> **IMPORTANT NOTE:** Setup of production build + service dockerization is in [TODO list](#:clipboard:-todo-list:)
 
 ## Project structure
 ```
@@ -19,7 +19,7 @@ Requirements:
 * **Docker** - v20.10.5
 * **Postman** - v8.0.6
 
-> :warning: Commands should be executed from root package
+> :warning: Commands should be executed from root directory
 ```
 # Setup database
 docker-compose up -d postgres
@@ -43,7 +43,7 @@ npm run start:ts
 ```
 
 ## Setup PostgreSQL
-> :warning: Commands should be executed from root package
+> :warning: Commands should be executed from root directory
 
 **Start database**
 ```
@@ -64,10 +64,20 @@ docker run --rm -v $(pwd)/database/migrations:/migrations --network host migrate
 docker run --rm -v $(pwd)/database/migrations:/migrations migrate/migrate create -ext sql -dir /migrations --seq {{ MIGRATION_NAME }}
 ```
 
-## TODO List:
-* Write unit and integration tests
-* Setup sourcemaps - use [source-map-support package](https://www.npmjs.com/package/source-map-support)
-* Setup production build + write `Dockerfile`-s for collection-api and hn-sync
-* Improve config handling (e.g. [config package](https://www.npmjs.com/package/config))
-* Implement dependency injection (e.g. [tsyringe package](https://github.com/microsoft/tsyringe))
+## Run integration tests in Postman
+Steps:
+1. Setup [development environment](#development-environment-setup) 
+2. Setup [PostgreSQL database and execute migrations](#setup-postgresql)
+4. Start `collections-api` service
+5. Import `collections-api` collection and `collections-api-local` environment to Postman - find more [here](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman)
+5. Set your current Postman environment to `collections-api-local`
+6. Go to `collections-api` collection detail in Postman and press *Run* - find more [here](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman)
+7. Press *Run collections-api* and you should view results
 
+## :clipboard: TODO List:
+* Write unit and integration tests
+* Setup sourcemaps - use [source-map-support ](https://www.npmjs.com/package/source-map-support) package
+* Setup production build + write `Dockerfile`-s for collection-api and hn-sync
+* Change sync of HackerNews stories to run in batches
+* Improve config handling (e.g. [config](https://www.npmjs.com/package/config) package)
+* Implement dependency injection (e.g. [tsyringe](https://github.com/microsoft/tsyringe) package)

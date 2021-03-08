@@ -43,12 +43,12 @@ export class CollectionsService {
     return collection;
   }
 
-  async getCollectionByIdAsOwner(agentId: string, collectionId: string): Promise<Collection> {
+  async getCollectionByIdAsOwner(ownerId: string, collectionId: string): Promise<Collection> {
     const collection = await this.collectionsRepo.getOne({ id: collectionId });
     if (!collection) {
       throw new Error(CollectionsServiceErr.COLLECTION_NOT_FOUND);
     }
-    if (collection.ownerId !== agentId) {
+    if (collection.ownerId !== ownerId) {
       throw new Error(CollectionsServiceErr.FORBIDDEN);
     }
     return collection;

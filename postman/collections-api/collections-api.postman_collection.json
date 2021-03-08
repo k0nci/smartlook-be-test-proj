@@ -222,43 +222,6 @@
 			"response": []
 		},
 		{
-			"name": "Delete stories collection",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 204\", function () {",
-							"    pm.response.to.have.status(204);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{access_token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{host_url}}/collections/{{collection_id}}",
-					"host": [
-						"{{host_url}}"
-					],
-					"path": [
-						"collections",
-						"{{collection_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Add stories to collection",
 			"event": [
 				{
@@ -301,6 +264,43 @@
 						"{{collection_id}}",
 						"stories",
 						"bulk-insert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete stories collection",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host_url}}/collections/{{collection_id}}",
+					"host": [
+						"{{host_url}}"
+					],
+					"path": [
+						"collections",
+						"{{collection_id}}"
 					]
 				}
 			},
