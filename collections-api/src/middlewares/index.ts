@@ -3,6 +3,7 @@ import { middleware as error } from './error';
 import { middleware as reqLogger } from './reqLogger';
 import { middleware as validate } from './validator';
 import { middleware as authenticate } from './authenticate';
+import { middleware as asyncHandler } from './asyncHandler';
 
 export default {
   notFound,
@@ -10,4 +11,5 @@ export default {
   reqLogger,
   validate,
   authenticate,
+  asyncHandler,
 };

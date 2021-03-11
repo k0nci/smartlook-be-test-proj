@@ -50,8 +50,7 @@ export class UsersService {
   }
 
   private async createPasswordHash(password: string): Promise<string> {
-    // TODO: Configure rounds from config
-    return bcrypt.hash(password, 14);
+    return bcrypt.hash(password, this.config.BCRYPT_SALT_ROUNDS);
   }
 
   private async checkPassword(userPwd: string, providedPwd: string): Promise<boolean> {

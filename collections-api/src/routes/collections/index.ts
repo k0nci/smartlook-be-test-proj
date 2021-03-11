@@ -61,7 +61,7 @@ router.get<GetCollectionByIdParams, CollectionWithStories>(
   '/:collectionId',
   middlewares.authenticate(ACCESS_TOKEN_SECRET),
   middlewares.validate(getCollectionByIdSchema),
-  async (req, res, next) => {
+  middlewares.asyncHandler(async (req, res, next) => {
     const app = req.app;
 
     const agent = req.user!;
@@ -89,13 +89,13 @@ router.get<GetCollectionByIdParams, CollectionWithStories>(
       return next(httpErr);
     }
   },
-);
+));
 
 router.patch<UpdateCollectionByIdParams, any, UpdateCollectionByIdBody>(
   '/:collectionId',
   middlewares.authenticate(ACCESS_TOKEN_SECRET),
   middlewares.validate(updateCollectionByIdSchema),
-  async (req, res, next) => {
+  middlewares.asyncHandler(async (req, res, next) => {
     const app = req.app;
 
     const agent = req.user!;
@@ -123,13 +123,13 @@ router.patch<UpdateCollectionByIdParams, any, UpdateCollectionByIdBody>(
       return next(httpErr);
     }
   },
-);
+));
 
 router.delete<any, any, DeleteCollectionByIdParams>(
   '/:collectionId',
   middlewares.authenticate(ACCESS_TOKEN_SECRET),
   middlewares.validate(deleteCollectionByIdSchema),
-  async (req, res, next) => {
+  middlewares.asyncHandler(async (req, res, next) => {
     const app = req.app;
 
     const agent = req.user!;
@@ -157,4 +157,4 @@ router.delete<any, any, DeleteCollectionByIdParams>(
       return next(httpErr);
     }
   },
-);
+));

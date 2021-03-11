@@ -23,7 +23,7 @@ router.post<
   '/bulk-insert',
   middlewares.authenticate(ACCESS_TOKEN_SECRET),
   middlewares.validate(insertStoriesToCollectionSchema),
-  async (req, res, next) => {
+  middlewares.asyncHandler(async (req, res, next) => {
     const app = req.app;
 
     const agent = req.user!;
@@ -52,4 +52,4 @@ router.post<
       return next(httpErr);
     }
   },
-);
+));

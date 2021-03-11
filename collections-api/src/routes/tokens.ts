@@ -11,7 +11,7 @@ export const router = Router();
 router.post<any, { userId: string; accessToken: string }, CreateTokensBody>(
   '/',
   middlewares.validate(createTokensSchema),
-  async (req, res, next) => {
+  middlewares.asyncHandler(async (req, res, next) => {
     const app = req.app;
 
     try {
@@ -33,4 +33,4 @@ router.post<any, { userId: string; accessToken: string }, CreateTokensBody>(
       return next(httpErr);
     }
   },
-);
+));
