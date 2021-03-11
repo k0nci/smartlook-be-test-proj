@@ -39,21 +39,10 @@ export abstract class PgRepository<T> {
   }
 
   protected async execQuery(query: Knex.QueryBuilder, tx: Transaction | null = null): Promise<any> {
-    const isLocalTx = tx === null;
-    // Cannot use isLocalTransaction varialbe due to typing
-    const txLocal = tx === null ? await this.beginTransaction() : tx;
-    try {
-      const resultSet = await query.transacting(txLocal);
-      if (isLocalTx) {
-        await txLocal.commit();
-      }
-      return resultSet;
-    } catch(err) {
-      if (isLocalTx) {
-        await txLocal.rollback();
-      }
-      throw err;
+    if (tx === null) {
+      return query;
     }
+    return query.transacting(tx);
   }
 
 }
