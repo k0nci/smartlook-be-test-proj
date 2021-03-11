@@ -7,11 +7,11 @@ import { Comment } from '@smartlook/models/Comment';
 import { ItemType } from '@smartlook/api-clients/hn/models/Item';
 import { getLogger } from '../utils/logger';
 
-const FILE_NAME = path.parse(path.basename(__filename)).name;
+const FILE_NAME = path.parse(__filename).name;
 const LOGGER = getLogger(FILE_NAME);
 
 export class SyncCommentsJob {
-  readonly JOB_NAME = 'sync-comments';
+  readonly JOB_NAME = FILE_NAME;
   readonly JOB_ENABLED = process.env.SYNC_COMMENTS_ENABLED ?? true;
   readonly JOB_CRON = process.env.SYNC_COMMENTS_CRON ?? '* * * * *';
 

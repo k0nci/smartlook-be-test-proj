@@ -51,9 +51,9 @@ for (const job of JOBS_TO_RUN) {
     continue;
   }
   const cronJob = new CronJob(job.JOB_CRON, async () => {
-    LOGGER.info(`Job ${job.JOB_NAME} started`);
+    LOGGER.info(`Job '${job.JOB_NAME}' started`);
     await job.run();
-    LOGGER.info(`Job ${job.JOB_NAME} finished`);
+    LOGGER.info(`Job '${job.JOB_NAME}' finished`);
   });
   cronJob.start();
 
