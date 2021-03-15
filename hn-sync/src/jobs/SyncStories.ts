@@ -1,6 +1,7 @@
 import { HNApiClient } from '@smartlook/api-clients/hn';
 import { ItemType } from '@smartlook/api-clients/hn/models/Item';
 import { Story } from '@smartlook/models/Story';
+import { CommentsRepository } from '@smartlook/repositories/Comments';
 import { StoriesRepository } from '@smartlook/repositories/Stories';
 import path from 'path';
 import { getLogger } from '../utils/logger';
@@ -13,7 +14,11 @@ export class SyncStoriesJob {
   readonly JOB_ENABLED = process.env.SYNC_STORIES_ENABLED ?? true;
   readonly JOB_CRON = process.env.SYNC_STORIES_CRON ?? '* * * * *';
 
-  constructor(private hnApiClient: HNApiClient, private storiesRepo: StoriesRepository) {}
+  constructor(
+    private hnApiClient: HNApiClient,
+    private storiesRepo: StoriesRepository,
+    private commentsRepo: CommentsRepository,
+  ) {}
 
   async run(): Promise<void> {
     // TODO: Change to get stories in batches
@@ -39,8 +44,7 @@ export class SyncStoriesJob {
   async syncStory(story: Story): Promise<'DELETED' | 'UPDATED'> {
     const storyFound = await this.fetchStory(story);
     if (!storyFound) {
-      await this.storiesRepo.deleteAll({ id: story.id });
-      return 'DELETED';
+      return this.deleteStoryAndComments(story);
     } else {
       await this.storiesRepo.upsertOne(storyFound);
       return 'UPDATED';
@@ -62,4 +66,16 @@ export class SyncStoriesJob {
     };
   }
 
+  async deleteStoryAndComments(story: Story): Promise<'DELETED'> {
+    const tx = await this.commentsRepo.beginTransaction();
+    try {
+      await this.commentsRepo.deleteAll({ parent: story.id }, tx);
+      await this.storiesRepo.deleteAll({ id: story.id }, tx);
+      await tx.commit();
+    } catch (err) {
+      await tx.rollback();
+      throw err;
+    }
+    return 'DELETED';
+  }
 }
