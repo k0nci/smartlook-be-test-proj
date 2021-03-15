@@ -42,7 +42,7 @@ const commentsRepo = new CommentsRepository(pgPool);
 
 const JOBS_TO_RUN = [
   new SyncCommentsJob(hnApiClient, storiesRepo, commentsRepo),
-  new SyncStoriesJob(hnApiClient, storiesRepo),
+  new SyncStoriesJob(hnApiClient, storiesRepo, commentsRepo),
 ];
 
 const runningJobs = [];

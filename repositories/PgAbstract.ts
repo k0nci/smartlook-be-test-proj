@@ -34,7 +34,7 @@ export abstract class PgRepository<T> {
     await this.execQuery(query, tx);
   }
 
-  async beginTransaction(isolationLevel: IsolationLevel = IsolationLevel.SERIALIZABLE): Promise<Transaction> {
+  async beginTransaction(isolationLevel: IsolationLevel = IsolationLevel.READ_COMMITTED): Promise<Transaction> {
     return this.pool.transaction({ isolationLevel: isolationLevel });
   }
 
