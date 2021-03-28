@@ -5,6 +5,7 @@
   "main": "./src/app.ts",
   "scripts": {
     "start:ts": "ts-node --files --project ./tsconfig.json ./src/app.ts",
+    "build": "tsc --project ./tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Matej Koncal",

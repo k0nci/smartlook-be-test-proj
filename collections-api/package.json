@@ -6,6 +6,7 @@
   "scripts": {
     "start:ts": "ts-node --project ./tsconfig.json ./src/bin/www.ts",
     "start:watch": "nodemon ./src/bin/www.ts",
+    "build": "tsc --project ./tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Matej Koncal",

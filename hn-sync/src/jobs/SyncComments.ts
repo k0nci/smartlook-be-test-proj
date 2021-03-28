@@ -1,5 +1,5 @@
 import path from 'path';
-import { StoriesRepository } from '@smartlook/repositories/stories';
+import { StoriesRepository } from '@smartlook/repositories/Stories';
 import { CommentsRepository } from '@smartlook/repositories/Comments';
 import { HNApiClient } from '@smartlook/api-clients/hn';
 import { Story } from '@smartlook/models/Story';

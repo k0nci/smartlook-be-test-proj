@@ -1,10 +1,10 @@
 import 'dotenv/config';
+import { HNApiClient } from '@smartlook/api-clients/hn';
 import { CommentsRepository } from '@smartlook/repositories/Comments';
-import { StoriesRepository } from '@smartlook/repositories/stories';
+import { StoriesRepository } from '@smartlook/repositories/Stories';
 import axios from 'axios';
 import { CronJob } from 'cron';
 import knex from 'knex';
-import { HNApiClient } from '../../api-clients/hn';
 import { SyncCommentsJob } from './jobs/SyncComments';
 import { SyncStoriesJob } from './jobs/SyncStories';
 import { getLogger } from './utils/logger';
