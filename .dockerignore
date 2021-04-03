@@ -1,0 +1,15 @@
+### Custom ###
+.git
+build
+database/migrations
+Dockerfile
+
+### dotenv ###
+.env
+
+### macOS ###
+.DS_Store
+
+### Node ###
+node_modules
+*/node_modules

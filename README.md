@@ -7,7 +7,7 @@
 |____api-clients          -- Clients used to access 3th party APIs
 |____collections-api      -- Collections API service
 |____database             -- Database schema migrations
-|____hn-sync              -- HackerNews sync service 
+|____hn-sync              -- HackerNews sync service
 |____models               -- Models used by services
 |____postman              -- Postman collections and environments
 |____repositories         -- Database access layer
@@ -64,9 +64,16 @@ docker run --rm -v $(pwd)/database/migrations:/migrations --network host migrate
 docker run --rm -v $(pwd)/database/migrations:/migrations migrate/migrate create -ext sql -dir /migrations --seq {{ MIGRATION_NAME }}
 ```
 
+## Build docker image
+> :warning: Commands should be executed from root directory
+
+```
+SERVICE_NAME={{ SERVICE_NAME }} && docker build --build-arg BUILD_SCOPE=${SERVICE_NAME} -t ${SERVICE_NAME} .
+```
+
 ## Run integration tests in Postman
 Steps:
-1. Setup [development environment](#development-environment-setup) 
+1. Setup [development environment](#development-environment-setup)
 2. Setup [PostgreSQL database and execute migrations](#setup-postgresql)
 4. Start `collections-api` service
 5. Import `collections-api` collection and `collections-api-local` environment to Postman - find more [here](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman)
