@@ -1,8 +1,9 @@
 {
   "name": "collections-api",
+  "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/bin/www.ts",
   "scripts": {
     "start:ts": "ts-node --project ./tsconfig.json ./src/bin/www.ts",
     "start:watch": "nodemon ./src/bin/www.ts",

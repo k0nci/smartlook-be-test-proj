@@ -1,8 +1,9 @@
 {
   "name": "hn-sync",
+  "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "./src/app.ts",
+  "main": "./src/bin/www.ts",
   "scripts": {
     "start:ts": "ts-node --files --project ./tsconfig.json ./src/app.ts",
     "build": "tsc --project ./tsconfig.json",
