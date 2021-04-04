@@ -27,8 +27,7 @@ COPY hn-sync/package*.json ./hn-sync/
 COPY models/package*.json ./models/
 COPY repositories/package*.json ./repositories/
 COPY --from=build /app/build/ ./
-RUN npm run bootstrap -- --ci --scope ${BUILD_SCOPE} --include-dependencies -- --production
+RUN npx lerna bootstrap --ci --scope ${BUILD_SCOPE} --include-dependencies -- --production
 
 USER node
-
 ENTRYPOINT ["/sbin/tini", "--", "docker-entrypoint.sh"]
