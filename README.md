@@ -83,6 +83,7 @@ Steps:
 
 ## :clipboard: TODO List:
 * Write unit and integration tests
+* Create OpenAPI documentation for `collections-api`
 * Change sync of HackerNews stories to run in batches
 * Improve config handling (e.g. [config](https://www.npmjs.com/package/config) package)
 * Implement dependency injection (e.g. [tsyringe](https://github.com/microsoft/tsyringe) package)
