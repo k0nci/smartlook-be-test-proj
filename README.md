@@ -1,6 +1,6 @@
 # smartlook-be-test-proj
 
-> **IMPORTANT NOTE:** Setup of production build + service dockerization is in [TODO list](#:clipboard:-todo-list:)
+> **IMPORTANT NOTE:** Unit and integration tests are in [TODO list](#:clipboard:-todo-list:). The API can be currently tested using postman runner
 
 ## Project structure
 ```
