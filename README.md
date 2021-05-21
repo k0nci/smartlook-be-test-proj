@@ -15,7 +15,7 @@
 
 ## Development environment setup
 Requirements:
-* **Node** - v15.7.0
+* **Node** - v16.2.0
 * **Docker** - v20.10.5
 * **Postman** - v8.0.6
 

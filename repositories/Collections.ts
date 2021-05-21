@@ -66,11 +66,11 @@ export class CollectionsRepository extends PgRepository<Collection> {
     const txLocal = tx === null ? await this.beginTransaction() : tx;
 
     try {
-      const collectionStroriesQuery = this.pool('collections_stories')
+      const collectionStoriesQuery = this.pool('collections_stories')
         .delete()
         .where('collection_id', '=', collection.id);
       const collectionsQuery = this.pool(this.tableName).delete().where('id', '=', collection.id);
-      await this.execQuery(collectionStroriesQuery, txLocal);
+      await this.execQuery(collectionStoriesQuery, txLocal);
       await this.execQuery(collectionsQuery, txLocal);
 
       if (isLocalTx) {

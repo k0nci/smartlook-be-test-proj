@@ -1,4 +1,4 @@
-FROM node:15.13-alpine as build
+FROM node:16.2-alpine as build
 ARG BUILD_SCOPE
 
 WORKDIR /app
@@ -10,7 +10,7 @@ COPY . .
 RUN npm run bootstrap
 RUN npm run build -- --scope ${BUILD_SCOPE} --include-dependencies
 
-FROM node:15.13-alpine
+FROM node:16.2-alpine
 ARG BUILD_SCOPE
 ENV SERVICE_NAME=${BUILD_SCOPE}
 RUN apk add --no-cache tini
