@@ -11,9 +11,9 @@ RUN npm run bootstrap
 RUN npm run build -- --scope ${BUILD_SCOPE} --include-dependencies
 
 FROM node:16.2-alpine
+RUN apk add --no-cache tini
 ARG BUILD_SCOPE
 ENV SERVICE_NAME=${BUILD_SCOPE}
-RUN apk add --no-cache tini
 
 WORKDIR /app
 COPY docker-entrypoint.sh /usr/local/bin/

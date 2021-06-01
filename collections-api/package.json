@@ -5,8 +5,8 @@
   "description": "",
   "main": "./src/bin/www.ts",
   "scripts": {
-    "start:ts": "ts-node --project ./tsconfig.json ./src/bin/www.ts",
-    "start:watch": "nodemon ./src/bin/www.ts",
+    "start:ts": "ts-node --files --project ./tsconfig.json ./src/bin/www.ts",
+    "start:watch": "nodemon --exec 'ts-node --files' ./src/bin/www.ts",
     "build": "tsc --project ./tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

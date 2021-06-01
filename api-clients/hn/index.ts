@@ -2,7 +2,7 @@ import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Item } from './models/Item';
 
 export const enum HNClientErr {
-  DATA_UNAVAILABE = 'Unable to GET data from HackerNews API',
+  DATA_UNAVAILABLE = 'Unable to GET data from HackerNews API',
 }
 
 type HttpClient = AxiosInstance;
@@ -19,7 +19,7 @@ export class HNApiClient {
     const path = '/maxitem.json';
     const res = await this.get<number>(path);
     if (!res) {
-      throw new Error(HNClientErr.DATA_UNAVAILABE);
+      throw new Error(HNClientErr.DATA_UNAVAILABLE);
     }
     return res;
   }
@@ -36,7 +36,7 @@ export class HNApiClient {
       return null;
     }
     if (response.status !== 200) {
-      throw new Error(HNClientErr.DATA_UNAVAILABE);
+      throw new Error(HNClientErr.DATA_UNAVAILABLE);
     }
     return response.data;
   }

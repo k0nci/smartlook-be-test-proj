@@ -2,10 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "outDir": "../build/collections-api",
-    "types": [
-      "./src/types/express"
-    ]
+    "outDir": "../build/collections-api"
   },
   "include": ["./src"]
 }
