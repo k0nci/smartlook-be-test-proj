@@ -27,16 +27,16 @@ export class SyncCommentsJob {
     const syncResults = await Promise.allSettled(stories.map(async (one) => this.syncStoryComments(one)));
 
     let succSyncedStories = 0;
-    let succfullySyncedComments = 0;
+    let succSyncedComments = 0;
     for (const syncRes of syncResults) {
       if (syncRes.status === 'fulfilled') {
         succSyncedStories++;
-        succfullySyncedComments += syncRes.value;
+        succSyncedComments += syncRes.value;
       } else {
         LOGGER.error(syncRes.reason);
       }
     }
-    LOGGER.info(`Successfully synced ${succfullySyncedComments} comments of ${succSyncedStories} stories`);
+    LOGGER.info(`Successfully synced ${succSyncedComments} comments of ${succSyncedStories} stories`);
   }
 
   async syncStoryComments(story: Story): Promise<number> {
